@@ -1,0 +1,59 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+<form #ngForm="ngForm" (ngSubmit)="onFormSubmit(firstFormGroup)" [formGroup]="firstFormGroup" class="py-2 px-2">
+<div class="m-4">
+
+    <div class="secondary-medium-font-size flex justify-center">
+        Areas Served by the Trucker/Transporter
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" mat-raised-button class="less-radios-primary-button">Save</button>
+    </div>
+
+
+    <div class="primary-medium-font-size mt-8">
+        Areas Served by the Transporter
+    </div>
+    <div class="black-medium-font-size mt-4">
+        1. West Bengal, India.
+    </div>
+
+                 <div class="mt-6">
+                    <!-- select option -->
+                     <div class="select w-full flex">
+                        <mat-form-field appearance="outline" class="w-1/2 component--mat-form-field__custom-input">
+                          <mat-label>Select</mat-label>
+                          <mat-select appearance="outline" placeholder="Select" formControlName="selectControl" required restrictKeywordValidator="Cat">
+                            <mat-option>Select</mat-option>
+                            <!-- <mat-option *ngFor="let numberOfWheels of numberOfWheels" [value]="numberOfWheels.name">
+                              {{ numberOfWheels.name }}
+                            </mat-option> -->
+                          </mat-select>
+                          <mat-error *ngIf="firstFormGroup.get('selectControl').hasError('required')">Please choose an option</mat-error>
+                          <mat-error *ngIf="firstFormGroup.get('selectControl').hasError('invalidValue')">Please choose any other</mat-error>
+                        </mat-form-field>
+                        
+                         <div class="mt-2 ml-8">
+                             <button type="submit" mat-raised-button class="less-radios-primary-button">Add</button>
+                         </div>
+                     </div>    
+                </div>
+
+
+                <div class="mt-16">
+                    <img src="../../../../../../assets/images/india_map.png" alt="">
+                </div>
+    </div>
+</form>
