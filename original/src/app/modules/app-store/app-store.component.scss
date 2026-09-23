@@ -1,0 +1,15 @@
+// @import"../../../styles/global";
+// @import"../../../styles/variables";
+
+@import 'global';
+@import 'variables';
+
+.title-area {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 600;
+  color: $large-text-color;
+  // margin-left: 15px;
+  //  background-color: green;
+}
+
