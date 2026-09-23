@@ -1,0 +1,99 @@
+<!-- <p>add-edit-transport-vehicles-details works!</p> -->
+
+<form [formGroup]="firstFormGroup">
+    <div class="m-2">
+        <div class="primary-medium-font-size">Add / Edit Transport Vehicles details</div>
+    
+        <div class="mt-6">
+            <button type="submit" mat-raised-button class="primary-button">Save</button>
+        </div>
+        
+    <!-- Vehicle Reg Number: -->
+          <div class="mt-4">
+            <mat-form-field appearance="outline" class="w-full gt-lg:w-1/2 component--mat-form-field__custom-input">
+            <mat-label>Vehicle Reg Number:</mat-label>
+            <input matInput placeholder="Vehicle Reg Number" formControlName="vehicleRegNumber" required/>
+              <mat-error
+                class="error"
+                *ngIf="
+                  firstFormGroup.get('vehicleRegNumber').hasError('required') ||
+                  firstFormGroup.get('vehicleRegNumber').touched
+                "
+              >
+                Name is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+
+
+         <div class="flex  mt-8">
+            <div class="w-1/2">
+                <mat-form-field
+                  appearance="outline"
+                  class="w-full component--mat-form-field__custom-input"
+                >
+                  <mat-label>Max Vehicle Cargo Carrying Capacity:</mat-label>
+                  <input
+                    matInput
+                    placeholder="Max Vehicle Cargo Carrying Capacity"
+                    formControlName="maxVehicleCargoCarryingCapacity"
+                    required/>
+
+                   <mat-error
+                    class="error"
+                    *ngIf="
+                      firstFormGroup.get('maxVehicleCargoCarryingCapacity').hasError('required') ||
+                      firstFormGroup.get('maxVehicleCargoCarryingCapacity').touched">
+                      Max Vehicle Cargo Carrying Capacity Is Required
+                   </mat-error>
+                </mat-form-field>
+            </div>
+
+
+               <div class="ml-2">
+                    <mat-form-field appearance="outline" class="component--mat-form-field__custom-input w-1/2">
+                 <mat-label>Kgs</mat-label>
+                  <mat-select appearance="outline" placeholder="Kgs" formControlName="kgsControl" required>
+                     <mat-option>--</mat-option>
+                         <mat-option *ngFor="let kgs of Kgs" [value]="kgs.name">
+                         {{ kgs.name }}
+                         </mat-option>
+                  </mat-select>
+                 <mat-error *ngIf="firstFormGroup.get('kgsControl').hasError('required')">Please choose an option</mat-error>
+              <mat-error *ngIf="firstFormGroup.get('kgsControl').hasError('invalidValue')">Please choose any other</mat-error>
+                    </mat-form-field>
+                </div>
+
+            
+        </div>  
+
+
+
+
+<div class="mt-10 flex">
+
+    <div class="flex flex-col w-3/4 gt-lg:w-1/5 gt-md:w-1/5">
+        <div class="primary-medium-font-size">
+            Vehicle Statuatory Documents: 
+        </div>
+        <div>
+            <span class="black-medium-font-size">Reg Certificate, Insurance, FC,Owners Aadhaar Proof,Owners PAN Proof</span>
+        </div>
+    </div>
+
+    <div class="ml-6 mt-4 flex flex-col">
+        <div>
+            <img src="../../../../../../assets/images/upload_image.png" alt="">
+        </div>
+        <div class="mr-4">
+            Upload
+        </div>
+    </div>
+
+    
+
+</div>
+
+    </div>
+</form>
