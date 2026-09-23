@@ -1,0 +1,226 @@
+.height {
+    line-height: 10px;
+  }
+  
+  .mtx-date {
+    .mat-radio-button {
+      margin: 1rem;
+    }
+  
+    .mat-checkbox {
+      display: inline-block;
+      margin: 1rem 1rem 1rem 0;
+    }
+    .mat-form-field {
+      margin-right: 1rem;
+    }
+    .mat-card {
+      max-width: 300px;
+    }
+    .mat-slider {
+      margin: 0 0.5rem;
+    }
+   
+  }
+  
+  
+  mat-form-field{
+    @apply w-full gt-md:w-[50%]
+  }
+
+
+
+
+
+
+
+//   table design
+
+// @import"../../../../../styles/variables";
+@import "variables";
+
+// @media print {
+//   :not(.printMe) {
+//     display: visible !important;
+//   }
+// }
+
+// @media print {
+//   .print {
+//     display: visible;
+//   }
+// }
+
+/* Structure */
+.example-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  // width: 30%;
+  // max-height: 500px;
+  // min-width: 10px;
+  margin: 5px;
+  // overflow: scroll;
+}
+
+table {
+  width: 100%;
+  // margin-top: 17px;
+}
+
+.print {
+  position: relative;
+  top: 10px;
+  cursor: pointer;
+  right: 5px;
+}
+.example-loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.example-rate-limit-reached {
+  max-width: 360px;
+  text-align: center;
+}
+
+/* Column Widths */
+.mat-column-number,
+.mat-column-state {
+  max-width: 64px;
+}
+
+.mat-column-created {
+  max-width: 124px;
+}
+
+//
+
+.mat-column-position {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+.mat-column-name {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+.mat-column-weight {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+.mat-column-symbol {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+
+.app-hint {
+  background-color: #ffff00;
+  color: #000000;
+  padding: 3px;
+  font-weight: 550;
+  font-size: 12px;
+}
+
+.mat-paginator {
+  background: unset;
+}
+
+
+.mat-toolbar-row, .mat-toolbar-single-row {
+  display: flex;
+  box-sizing: border-box;
+  padding: 0 0px; 
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.mat-toolbar-row, .mat-toolbar-single-row {
+  height: 37px;
+}
+
+
+
+
+
+
+
+
+
+
+// telephone code 
+
+.country-selector {
+  opacity: 1 !important;
+  bottom: 8px !important;
+}
+
+input:not(.country-search) {
+  bottom: 3px;
+  left: 10px;
+}
+
+.country-list-button {
+  font-size: 0.8rem !important;
+}
+
+.mat-menu-content:not(:empty) {
+  max-height: 250px;
+}
+
+
+
+.m-t-10 {
+  margin-top: 10px;
+}
+
+.error {
+  color: red;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// nd table right corder 
+
+.mat-column-user_name {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+
+.mat-column-face_id {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+
+.mat-column-reg_mobile_no {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+
+.mat-column-user_category {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+
+
+  
+  
