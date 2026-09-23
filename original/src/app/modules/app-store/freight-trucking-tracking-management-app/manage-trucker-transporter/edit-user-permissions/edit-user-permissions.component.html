@@ -1,0 +1,179 @@
+<div class="gt-lg:m-2 lt-lg:m-2">
+
+    <div class="primary-medium-font-size flex justify-center">
+        Link Users - Trucker/Transporter - Link Users
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" mat-raised-button class="less-radios-primary-button">Save</button>
+    </div>
+
+
+    <div class="black-medium-font-size mt-4">
+        Link default users who are representatives / members of: <span class="red-medium-font-size">Transporter 1</span>
+    </div>
+
+
+    <div class="flex mt-4">
+        <div>
+            <button type="submit" mat-raised-button class="primary-button">Add</button>
+        </div>
+        <div class="ml-4">
+            <button type="submit" mat-raised-button class="primary-button">Delete</button>
+        </div>
+    </div>
+
+
+    <!--table  -->
+                <!-- component--mat-table__custom-table this class only make table design -->
+                <div style="overflow-x:auto;"  id="pdfTable" class="component--mat-table__custom-table mt-10">
+                  <table   class="table table-bordered table-sm w-full" id="excel_table" mat-table [dataSource]="dataSource">
+                   <!-- Position Column -->
+                     <ng-container matColumnDef="user_name" style="border-right: 1px solid #9A9A9A;">
+                     <th mat-header-cell *matHeaderCellDef style="width: 247px; max-width: 150px; word-wrap: break-word;margin-left: 0px; padding: 10px;">User Name</th>
+                       <td style="padding:10px;min-width: 150px;" mat-cell *matCellDef="let element">
+                        <div class="flex">
+                          <div class=""><mat-radio-button value="1"></mat-radio-button> </div> 
+                          <div class="pt-1">{{ element.user_name }}</div>
+                        </div>
+                       </td>      
+                     </ng-container>
+
+                  
+                  <!-- Weight Column -->
+                     <ng-container matColumnDef="face_id">
+                          <th mat-header-cell *matHeaderCellDef style="width: 247px; max-width: 150px;word-wrap: break-word; padding: 10px;">Face Id</th>
+                          <td style="padding: 10px;min-width: 100px;" mat-cell *matCellDef="let element">
+                            <!-- {{ element.face_id }} -->
+                            <div> <img src="../../../../../../assets/images/profile_icon.png" alt=""> </div>
+                          </td>
+                     </ng-container>
+                  
+
+                          <!-- Symbol Column -->
+                       <ng-container matColumnDef="reg_mobile_no">
+                           <th mat-header-cell *matHeaderCellDef style="width: 247px; max-width: 150px; word-wrap: break-word; padding: 10px;">Reg Mobile No</th>
+                           <td style="padding: 10px;min-width: 100px;" mat-cell *matCellDef="let element">{{ element.reg_mobile_no }}</td>
+                       </ng-container>
+
+                       <!-- Symbol Column -->
+                               <ng-container matColumnDef="user_category">
+                                <th mat-header-cell *matHeaderCellDef style="width: 247px; max-width: 150px; word-wrap: break-word; padding: 10px;">User Category</th>
+                                <td style="padding: 10px; min-width: 100px;" mat-cell *matCellDef="let element">{{ element.user_category }}</td>
+                            </ng-container>
+
+                                   <!-- Symbol Column -->
+                                   <ng-container matColumnDef="access_to_dispatch_documents">
+                                    <th mat-header-cell *matHeaderCellDef style="width: 247px; max-width: 150px; word-wrap: break-word; padding: 10px;">Access To Dispatch Documents</th>
+                                    <td style="padding: 10px; min-width: 100px;" mat-cell *matCellDef="let element">
+                                      <!-- {{ element.access_to_dispatch_documents }} -->
+                                      <div> <mat-checkbox></mat-checkbox> </div>
+                                    </td>
+                                </ng-container>
+
+                                     <!-- Symbol Column -->
+                                     <ng-container matColumnDef="quote_freight_rates">
+                                      <th mat-header-cell *matHeaderCellDef style="width: 247px; max-width: 150px; word-wrap: break-word; padding: 10px;">Quote Freight Rates</th>
+                                      <td style="padding: 10px; min-width: 100px;" mat-cell *matCellDef="let element">
+                                        <!-- {{ element.quote_freight_rates }} -->
+                                        <div> <mat-checkbox></mat-checkbox> </div>
+                                      </td>
+                                  </ng-container>
+
+                                       <!-- Symbol Column -->
+                                       <ng-container matColumnDef="provide_support_to_driver_rider_transporter">
+                                        <th mat-header-cell *matHeaderCellDef style="width: 247px; max-width: 150px; word-wrap: break-word; padding: 10px;">Provide Support To Driver Rider Transporter</th>
+                                        <td style="padding: 10px; min-width: 100px;" mat-cell *matCellDef="let element">
+                                          <!-- {{ element.provide_support_to_driver_rider_transporter }} -->
+                                          <div> <mat-checkbox></mat-checkbox> </div>
+                                        </td>
+                                    </ng-container>
+                  
+                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                  </table>                  
+                </div>
+
+                
+  <!-- container div -->
+</div>
+
+  <!-- paginator filter -->
+<div class="">                    
+  <mat-toolbar-row class=" component--mat-paginator__remove-space">
+    <mat-paginator
+    fxLayoutAlign="start start"
+    (page)="
+    paginatorHtmlElement.nativeElement.querySelector(
+    'div.mat-select-value > span > span'
+    ).innerHTML =
+    paginator.pageSize == 2147483647 ? 'All' : paginator.pageSize
+    "
+    #paginator
+    #paginatorElement
+    [length]="dataSource.data.length"
+    [pageIndex]="0"
+    [pageSizeOptions]="[5, 10, 20, dataSource.data.length]"
+    [pageSize]="10"
+    >
+    </mat-paginator>
+  </mat-toolbar-row>
+    
+    
+    
+    
+    <div class="flex w-full">
+    <div class="custom-mat-floating-label">
+    <mat-form-field
+    appearance="outline"
+    class="component--mat-form-field__custom-input pl-2"
+    >
+    <mat-label>Filter</mat-label>
+    <input
+    [disabled]="paginator.pageSize == dataSource.data.length? false : true"
+    matInput
+    (keyup)="applyFilter($event)"
+    placeholder="Lithium"
+    #input
+    />
+    </mat-form-field>
+    </div>
+    
+    <div class="flex w-full justify-end">
+    <span class="p-5 cursor-pointer text-sm font-medium" [matMenuTriggerFor]="menu">Export</span>
+    </div>
+    </div>   
+    
+    <div class="app-hint">
+    * Please select all Records to enable table data Filter.
+    </div>
+
+
+</div>
+
+<!-- Mat Menu -->
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="downloadAsPDF()">
+    <mat-icon>picture_as_pdf</mat-icon>
+    <span>Print / Export PDF</span>
+  </button>
+  <button mat-menu-item (click)="exportReport('sample.xlsx')">
+    <mat-icon>grid_on</mat-icon>
+    <span>Export SpreadSheet</span>
+  </button>
+  <button mat-menu-item (click)="exportReport('sample.csv')">
+    <mat-icon>grid_on</mat-icon>
+    <span>Export csv File</span>
+  </button>
+  <button mat-menu-item (click)="exportReport('sample.json')">
+    <mat-icon>grid_on</mat-icon>
+    <span>Export json</span>
+  </button>
+</mat-menu>
+
+
+
+
+
+
+        
