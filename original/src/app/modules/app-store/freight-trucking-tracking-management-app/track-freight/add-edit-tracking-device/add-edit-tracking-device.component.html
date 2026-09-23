@@ -1,0 +1,461 @@
+<div class="mat-stepper-container">
+
+    <div class="py-2">
+
+      <mat-stepper [linear]="isLinear" #stepper [orientation]="orientation" class="component--mat-stepper__custom-style">
+        <mat-step [stepControl]="firstFormGroup" label="Link Tracking Devices">
+          <form autocomplete="off" [formGroup]="firstFormGroup" class="space-y-5 pt-2">
+            <div class="mt-10">
+                <div class="primary-medium-font-size flex justify-center"> ADD / EDIT TRACKING DEVICE</div>
+                <div class="primary-medium-font-size mt-10 flex justify-center"><span><mat-radio-button></mat-radio-button></span> Link registered users Mobile as Tracking Device </div>
+                <div class="primary-medium-font-size mt-4 flex gt-lg:justify-center md:justify-center gt-lg:pr-20 md:pr-20"><span><mat-radio-button></mat-radio-button></span>Link <span class="red-medium-font-size ">GETster GPS</span> Tracking Devices</div>
+                  
+            </div>  
+           
+            <div class="flex justify-center mt-4">
+              <button  [disabled]="firstFormGroup.invalid" class="primary-button" mat-raised-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
+
+
+
+
+
+
+
+
+
+
+        <mat-step [stepControl]="secondFormGroup" label="Link Registered Users Mobile As Tracking Device">
+            <form autocomplete="off" [formGroup]="secondFormGroup" class="space-y-5 pt-2">
+
+
+              <div class="flex justify-center primary-medium-font-size">
+                ADD / EDIT TRACKING DEVICE
+               </div>
+               <div class="primary-medium-font-size mt-8 ml-2">Link registered users Mobile as Tracking Device</div>
+               <div class="primary-small-font-size mt-8"><span class="px-2"><mat-checkbox></mat-checkbox></span> Permit Change of registered users Enroute. </div>
+
+              <div class="mt-10">
+           <!--table  -->
+                <!-- component--mat-table__custom-table this class only make table design -->
+                <div style="overflow-x:auto;"  id="pdfTable" class="component--mat-table__custom-table mt-10">
+                    <table   class="table table-bordered table-sm w-full" id="excel_table" mat-table [dataSource]="dataSource">
+                     <!-- Position Column -->
+                       <ng-container matColumnDef="user_name" style="border-right: 1px solid #9A9A9A;">
+                       <th mat-header-cell *matHeaderCellDef style="width: 47px; max-width: 150px; word-wrap: break-word;margin-left: 0px; padding: 10px;">User Name</th>
+                         <td style="padding:10px;" mat-cell *matCellDef="let element">
+                          <div class="flex">
+                            <div><mat-radio-button value="1"></mat-radio-button> </div> 
+                            <div class="pt-1">{{ element.user_name }}</div>
+                          </div>
+                         </td>      
+                       </ng-container>
+
+               
+                    
+                     <!-- Name Column -->
+                      <ng-container matColumnDef="face_id">
+                          <th mat-header-cell *matHeaderCellDef style="width:80px; max-width: 150px; word-wrap: break-word;padding: 10px;">Face Id</th>
+                          <td style="padding:10px;" mat-cell *matCellDef="let element">
+                              {{ element.face_id }} 
+                          </td>
+                      </ng-container>
+                    
+                    <!-- Weight Column -->
+                       <ng-container matColumnDef="reg_mobile_no">
+                            <th mat-header-cell *matHeaderCellDef style="width: 80px; max-width: 150px;word-wrap: break-word; padding: 10px;">Reg Mobile No</th>
+                            <td style="padding: 10px;" mat-cell *matCellDef="let element">{{ element.reg_mobile_no }}</td>
+                       </ng-container>
+                    
+                           <!-- Symbol Column -->
+                           <ng-container matColumnDef="user_category">
+                              <th mat-header-cell *matHeaderCellDef style="width: 70px; max-width: 150px; word-wrap: break-word; padding: 10px;">User Category</th>
+                             <td style="padding: 10px;" mat-cell *matCellDef="let element">
+                                {{ element.user_category }}
+                             </td>
+                         </ng-container>
+                        
+                       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                    </table>                  
+                  </div>
+                
+    <!-- container div -->
+              </div>
+
+               <!-- paginator filter -->
+              <div class="">                    
+               <mat-toolbar-row class=" component--mat-paginator__remove-space">
+      <mat-paginator
+      fxLayoutAlign="start start"
+      (page)="
+      paginatorHtmlElement.nativeElement.querySelector(
+      'div.mat-select-value > span > span'
+      ).innerHTML =
+      paginator.pageSize == 2147483647 ? 'All' : paginator.pageSize
+      "
+      #paginator
+      #paginatorElement
+      [length]="dataSource.data.length"
+      [pageIndex]="0"
+      [pageSizeOptions]="[5, 10, 20, dataSource.data.length]"
+      [pageSize]="10"
+      >
+      </mat-paginator>
+               </mat-toolbar-row>
+      
+      
+      
+      
+      <div class="flex w-full">
+      <div class="custom-mat-floating-label">
+      <mat-form-field
+      appearance="outline"
+      class="component--mat-form-field__custom-input pl-2"
+      >
+      <mat-label>Filter</mat-label>
+      <input
+      [disabled]="paginator.pageSize == dataSource.data.length? false : true"
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Lithium"
+      #input
+      />
+      </mat-form-field>
+      </div>
+      
+      <div class="flex w-full justify-end">
+      <span class="p-5 cursor-pointer text-sm font-medium" [matMenuTriggerFor]="menu">Export</span>
+      </div>
+      </div>   
+      
+      <div class="app-hint">
+      * Please select all Records to enable table data Filter.
+      </div>
+  
+  
+              </div>
+
+               <!-- Mat Menu -->
+               <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="downloadAsPDF()">
+      <mat-icon>picture_as_pdf</mat-icon>
+      <span>Print / Export PDF</span>
+    </button>
+    <button mat-menu-item (click)="exportReport('sample.xlsx')">
+      <mat-icon>grid_on</mat-icon>
+      <span>Export SpreadSheet</span>
+    </button>
+    <button mat-menu-item (click)="exportReport('sample.csv')">
+      <mat-icon>grid_on</mat-icon>
+      <span>Export csv File</span>
+    </button>
+    <button mat-menu-item (click)="exportReport('sample.json')">
+      <mat-icon>grid_on</mat-icon>
+      <span>Export json</span>
+    </button>
+               </mat-menu>
+
+  
+              <div class="flex justify-end">
+                <div class="mr-2">
+                  <button class="primary-button" mat-raised-button matStepperPrevious>
+                    Back
+                  </button>
+                </div>
+                <div>
+                  <button  [disabled]="secondFormGroup.invalid"  class="primary-button" mat-raised-button matStepperNext>Next</button>
+                </div>
+              </div>
+
+
+             <!-- 2 -->  
+             <div class="flex flex-wrap ">
+              <div class="primary-medium-font-size md:mt-16 gt-lg:mt-16">Test Tracking Device of:</div>
+              <div class="lt-sm:mt-2 md:ml-6 gt-lg:ml-6 md:mt-16 gt-lg:mt-16">
+                <div class="black-small-font-size">Kirshna Kumar <span class="primary-small-font-size ml-2">Employee/Unit 1/Driver</span></div>
+                <div class="black-small-font-size">Tracking Mobile No<span class="primary-small-font-size ml-2">+91 8587216578</span></div>
+              </div>
+             </div>
+
+             <!-- android app -->
+
+              <div class="flex flex-wrap"> 
+              <!-- 1 -->
+              <div class="md:mt-8 gt-lg:mt-8">
+                <div class="primary-medium-font-size">play store (android)</div> 
+                <div class="flex mt-4">
+                 <div> <img src="../../../../../../assets/images/getbizapp 5.png" alt=""> </div>
+                 <div class="flex flex-col">
+                   <div class="black-medium-font-size mt-2">GPS Tracking App</div>
+                   <div class="primary-small-font-size mt-2">getbiz.app</div>
+                 </div>
+                </div>
+              </div>
+            <!-- 1 -->
+
+            <!-- 2 -->
+              <div class="md:ml-48 gt-lg:ml-48 lt-sm:mt-6 mt-8">
+                <div class="primary-medium-font-size">or from app store (apple - i phone) </div>
+                <div class="flex mt-4">
+                 <div> <img src="../../../../../../assets/images/getbizapp 5.png" alt=""> </div>
+                 <div class="flex flex-col">
+                   <div class="black-medium-font-size mt-2">GPS Tracking & Notifications App</div>
+                   <div class="primary-small-font-size mt-2">getbiz.app</div>
+                 </div>
+                </div>
+              </div>
+              <!--2  -->
+
+              </div>
+  </form>
+</mat-step>
+
+
+
+
+
+<!-- Test Tracking Device of: -->
+
+         <mat-step [stepControl]="thirdFormGroup" label="Test Tracking Device">
+          <form autocomplete="off" [formGroup]="thirdFormGroup" class="space-y-5 pt-2">
+           
+
+            <div class="flex flex-wrap ">
+              <div class="primary-medium-font-size lt-sm:mt-4 md:mt-8 gt-lg:mt-8">Test Tracking Device of:</div>
+              <div class="lt-sm:mt-2 md:ml-6 gt-lg:ml-6 md:mt-8 gt-lg:mt-8">
+                <div class="black-small-font-size">Kirshna Kumar <span class="primary-small-font-size ml-2">Employee/Unit 1/Driver</span></div>
+                <div class="black-small-font-size">Tracking Mobile No<span class="primary-small-font-size ml-2">+91 8587216578</span></div>
+              </div>
+             </div>
+
+             <div class="black-small-font-size">
+              As the “above user” has approved your tracking request through the native APP. You are viewing the live coordinates of the user.
+             </div>
+           
+             <div class="mt-4">
+                    <div class=""><img  class="w-full" src="../../../../../../assets/images/map1.png" alt=""></div>     
+             </div>
+
+             <!-- <div>
+              <button class="primary-button" mat-raised-button matStepperNext style="margin-left: 10px">Next</button>
+             </div> -->
+
+             <div class="primary-medium-font-size mt-10">
+                Select GPS Location data Upload Frequency
+             </div>
+             
+             <div class="">
+                <mat-form-field
+                  appearance="outline"
+                  class="w-1/2 component--mat-form-field__custom-input"
+                >
+                  <mat-label>Choose a seconds</mat-label>
+                  <mat-select
+                    appearance="outline"
+                    formControlName="trackingSeconds"
+                    required
+                    restrictKeywordValidator="Cat"
+                  >
+                    <mat-option>--</mat-option>
+                    <mat-option
+                      *ngFor="let trackingSecond of trackingSeconds"
+                      [value]="trackingSecond.name"
+                    >
+                      {{ trackingSecond.name }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="
+                    thirdFormGroup.get('trackingSeconds').hasError('required')
+                    "
+                    >Please choose an seconds</mat-error
+                  >
+                  <mat-error
+                    *ngIf="
+                      thirdFormGroup.get('trackingSeconds').hasError('invalidValue')
+                    "
+                    >Please choose any other</mat-error
+                  >
+                </mat-form-field>
+             </div>
+
+
+
+             <div class="flex justify-end">
+              <div>
+                 <button class="primary-button" mat-raised-button matStepperPrevious>
+                  Back
+                 </button>
+              </div>
+                   
+              <div class="mr-2">
+                <button [disabled]="thirdFormGroup.invalid" class="primary-button" mat-raised-button matStepperNext style="margin-left: 10px">Next</button>
+              </div>
+
+             </div>
+
+
+
+          </form>
+        </mat-step>
+
+
+        <mat-step [stepControl]="forthFormGroup" label="Add/Edit GETster GPS Tracking Devices">
+          <form autocomplete="off" [formGroup]="forthFormGroup" class="space-y-5 pt-2">
+
+             <div style="margin-top: 20px">
+              <div class="py-2">
+
+                <div class="trackingDeviceId my-2">
+                  <mat-form-field
+                    appearance="outline"
+                    class="w-1/2 component--mat-form-field__custom-input"
+                  >
+                    <mat-label>Tracking Device Id:</mat-label>
+                    <input
+                      matInput
+                      placeholder="Tracking Device Id"
+                      formControlName="trackingDeviceId"
+                      required
+                    />
+                    <mat-error
+                      class="error"
+                      *ngIf="
+                      forthFormGroup.get('trackingDeviceId').hasError('required') ||
+                      forthFormGroup.get('trackingDeviceId').touched
+                      "
+                    >
+                    Tracking device id is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div>
+                  <div class="primary-medium-font-size mt-6">
+                    Set GPS tracking time interval:
+                   </div>
+                   <div class="my-6">
+                    <mat-form-field
+                    appearance="outline"
+                    class="w-1/2 component--mat-form-field__custom-input"
+                  >
+                    <mat-label>Set GPS tracking time interval</mat-label>
+                    <mat-select
+                      appearance="outline"
+                      placeholder="Set GPS tracking time interval"
+                      formControlName="setGPSTrackingTimeInterval"
+                      required
+                    >
+                      <mat-option>--</mat-option>
+                      <mat-option *ngFor="let setGPSTrackingTimeInterval of setGPSTrackingTimeInterval" [value]="setGPSTrackingTimeInterval.name">
+                        {{ setGPSTrackingTimeInterval.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="forthFormGroup.get('setGPSTrackingTimeInterval').hasError('required')"
+                      >choose an option</mat-error
+                    >
+                    <mat-error
+                      *ngIf="
+                      forthFormGroup.get('setGPSTrackingTimeInterval').hasError('invalidValue')
+                      "
+                      >choose any other option</mat-error
+                    >
+                  </mat-form-field>
+
+                </div>
+
+                </div>
+
+
+                <div class="triverName my-6">
+                  <mat-form-field
+                    appearance="outline"
+                    class="w-1/2 component--mat-form-field__custom-input"
+                  >
+                    <mat-label>Driver Name:</mat-label>
+                    <input
+                      matInput
+                      placeholder="Driver Name"
+                      formControlName="driverName"
+                      required
+                    />
+                    <mat-error
+                      class="error"
+                      *ngIf="
+                      forthFormGroup.get('driverName').hasError('required') ||
+                      forthFormGroup.get('driverName').touched
+                      "
+                    >
+                    Driver Name is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="my-6">
+                    <mat-form-field appearance="outline" class="w-full gt-sm:w-1/2 component--mat-form-field__custom-input country_input_field">
+                       <ngx-mat-intl-tel-input
+                         formControlName="phone"
+                         [enablePlaceholder]="true"
+                         [enableSearch]="true"
+                         name="phone"
+                         #phone
+                         inputPlaceholder="Please enter mobile number"
+                         [preferredCountries]="['in', 'us']"
+                         id="mat-menu-panel">
+                    </ngx-mat-intl-tel-input>
+                    <mat-hint class="mt-4">eg : {{ phone.selectedCountry.placeHolder }}</mat-hint>
+                    </mat-form-field>
+                </div>
+               
+
+
+
+<div class="flex mt-8">
+  <button class="primary-button" mat-raised-button matStepperPrevious>
+    Back
+  </button>
+  <button
+    class="primary-button"
+    style="margin-left: 10px"
+    mat-raised-button
+    (click)="stepper.reset()"
+  >
+    Reset
+  </button>
+  <button
+  [disabled]="forthFormGroup.invalid"
+    class="primary-button"
+    style="margin-left: 10px"
+    mat-raised-button
+   (click)="submit()"
+    [disabled]="this.firstFormGroup.invalid && this.secondFormGroup.invalid"
+  >
+    Submit
+  </button>
+
+</div>
+
+
+              </div>
+
+
+             </div>
+
+          </form>
+        </mat-step>
+        
+        
+
+
+      </mat-stepper>
+    </div>
+  
+  
+  
+    
+  </div>
+  
