@@ -1,0 +1,79 @@
+<form  [formGroup]="firstFormGroup">
+    <div class="">
+           <mat-toolbar style="background-color:#FF4DFF;">
+                     <span class="ml-3" style="color:white">Subscribe Notifications</span> 
+                     <span class="example-spacer"></span>
+
+                     <button mat-icon- class="flex items-center justify-center ml-32">
+                      <mat-icon mat-dialog-close>close</mat-icon>
+                    </button>
+
+             </mat-toolbar>
+
+
+            <div class="m-4">
+               <div class="flex justify-center secondary-medium-font-size mt-8">
+                Please select from following event triggers for Notifications
+               </div> 
+
+               <div class="mt-4 ">On Inviting/Uninviting RFQs/RFBs<span class="ml-5"><img src="../../../../assets/images/x-mark.png" alt=""></span> </div>
+               <div class="mt-2">On receiving a Quotation/Bid <span class="ml-12"><img src="../../../../assets/images/x-mark.png" alt=""></span></div>
+                   
+               <!-- list of the -->
+               <div class="select mt-10">
+                <mat-form-field
+                  appearance="outline"
+                  class="w-full component--mat-form-field__custom-input"
+                >
+                  <mat-label>Add Event Trigger</mat-label>
+                  <mat-select
+                    appearance="outline"
+                    placeholder="Add Event Trigger"
+                    formControlName="addeventtriggerControl"
+                    required
+                    restrictKeywordValidator="Cat"
+                  >
+                    <mat-option>Add Event Trigger</mat-option>
+                    <mat-option *ngFor="let addEventTrigger of addEventTrigger" [value]="addEventTrigger.name">
+                      {{ addEventTrigger.name }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="firstFormGroup.get('addeventtriggerControl').hasError('required')">Please choose an option</mat-error>
+                  <mat-error *ngIf="firstFormGroup.get('addeventtriggerControl').hasError('invalidValue')">Please choose any other</mat-error>
+                </mat-form-field>
+               </div>
+
+               <div class="flex justify-center mt-8">
+                <button type="submit" mat-raised-button class="primary-button">SAVE REQUEST</button>
+               </div>
+
+            </div>
+
+          </div>
+
+
+
+
+  {{ firstformValues |json }}
+
+
+
+
+
+</form>
+
+
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+
+
