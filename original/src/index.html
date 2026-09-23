@@ -1,0 +1,198 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>FreightTruckingTrackingManagementApp</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <script
+      type="text/javascript"
+      src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+    ></script>
+    <style>
+      .translated-ltr {
+        margin-top: -40px;
+      }
+
+      .translated-ltr {
+        margin-top: -40px;
+      }
+
+      .goog-te-banner-frame {
+        display: none;
+        margin-top: -20px;
+      }
+
+      .goog-logo-link {
+        display: none !important;
+      }
+
+      .goog-te-gadget {
+        color: transparent !important;
+        /* background-color: red; */
+        /* height: 0; */
+        /* position: absolute;
+      right: 0px;
+      top: 1px;
+      z-index: 10; */
+      }
+
+      .goog-te-gadget .goog-te-combo {
+        color: black;
+        height: 26px;
+        width: 95px;
+        border-radius: 5px;
+      }
+    </style>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#1976d2" />
+  </head>
+
+  <body class="mat-app-background">
+    <app-root></app-root>
+
+    <noscript
+      >Please enable JavaScript to continue using this application.</noscript
+    >
+
+    <div
+      class="absolute top-[1px] z-10 right-0 lt-md:right-[35px] md:right-[35px] gt-md:right-[70px]"
+    >
+      <span id="google_translate_element" class="mat-elevation-z8"></span>
+    </div>
+    <script type=" text/javascript">
+      function googleTranslateElementInit() {
+      new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+      }
+    </script>
+  </body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>FreightTruckingTrackingManagementApp</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="cache-control" content="no-cache, must-revalidate, post-check=0, pre-check=0">
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <!-- <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="expires" content="timestamp">
+    <meta http-equiv="expires" content="-1"> -->
+
+    <!-- browser loading logo -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <script
+      type="text/javascript"
+      src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+    ></script>
+    <style>
+      #google_translate_element {
+        display: none;
+      }
+      .goog-te-banner-frame {
+        display: none !important;
+      }
+      body {
+        position: static !important;
+        top: 0 !important;
+        right: 0 !important;
+      }
+    </style>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#1976d2" />
+  </head>
+  <body class="mat-app-background">
+    <app-root></app-root>
+
+    <noscript
+      >Please enable JavaScript to continue using this application.</noscript
+    >
+
+    <!-- <div
+      class="absolute top-[1px] z-10 right-0 lt-md:right-[35px] md:right-[35px] gt-md:right-[70px]"
+    >
+  </div> -->
+    <span id="google_translate_element" class="mat-elevation-z8"></span>
+    <script>
+      var comboGoogleTradutor = null;
+      function GoogleTranslate() {
+        let val = localStorage.getItem("googleTranslate");
+        comboGoogleTradutor = document
+          .getElementById("google_translate_element")
+          .querySelector(".goog-te-combo");
+        trocarIdioma(val);
+      }
+
+      function changeEvent(el) {
+        if (el.fireEvent) {
+          el.fireEvent("onchange");
+        } else {
+          var evObj = document.createEvent("HTMLEvents");
+
+          evObj.initEvent("change", false, true);
+          el.dispatchEvent(evObj);
+        }
+      }
+
+      function trocarIdioma(sigla) {
+        if (comboGoogleTradutor) {
+          comboGoogleTradutor.value = sigla;
+          changeEvent(comboGoogleTradutor); //Dispara a troca
+        }
+      }
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          { pageLanguage: "en" },
+          "google_translate_element"
+        );
+      }
+    </script>
+  </body>
+</html>
+
