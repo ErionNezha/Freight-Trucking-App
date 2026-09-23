@@ -1,0 +1,1905 @@
+<div class="mat-stepper-container">
+
+  <div class="py-2">
+    <mat-stepper [linear]="isLinear" #stepper [orientation]="orientation" class="component--mat-stepper__custom-style">
+       <!-- first stepper -->
+       <mat-step  [stepControl]="firstFormGroup"  label="Route Plan & Qty">
+        <form autocomplete="off" [formGroup]="firstFormGroup" class="space-y-5 pt-2">
+          <div class="mt-4">
+            
+           <!-- table  overflow-x:auto; -->
+           <div class="mt-4" style="overflow-x:auto;">
+            <table style="width: 100%; min-width:990px; border-collapse: collapse;">
+             <tr >
+              <th style="border: 3px solid gray;"><span class="primary-medium-font-size">Route Plan:</span></th>
+              <th style="border: 3px solid gray;"><span class="primary-medium-font-size">Pick-Up / Delivery / Report</span></th>
+              <th style="border: 3px solid gray;"> <span class="primary-medium-font-size"> Pick-Up Quantity: </span> <span class="black-medium-font-size">Unit of Measurement</span></th>
+              <th style="border: 3px solid gray;"><span class="primary-medium-font-size">Delivery Quantity:  </span> <span class="black-medium-font-size">Unit of Measurement</span></th>
+             </tr>
+
+             <!-- first row -->
+              <tr>
+              <td style="border: 3px solid gray;">
+                 <div class="flex justify-center my-6 mx-2">
+
+                  <mat-form-field style="width:100% !important;"
+                    appearance="outline"
+                    class="component--mat-form-field__custom-input"
+                  >
+                    <mat-label>Start Location</mat-label>
+                    <mat-select
+                      appearance="outline"
+                      placeholder="Biz Name 1"
+                      formControlName="startLocation"
+                      required
+                      restrictKeywordValidator="Cat"
+                    >
+                      <mat-option>--</mat-option>
+                      <mat-option
+                        *ngFor="let biz_name of biz_names"
+                        [value]="biz_name.name"
+                      >
+                        {{ biz_name.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                 </div> 
+              </td>
+
+              <td style="border: 3px solid gray;">
+                <div class="flex justify-center my-6 mx-2">
+                  <mat-form-field style="width:100% !important;"
+                    appearance="outline"
+                    class="w-full component--mat-form-field__custom-input"
+                  >
+                    <mat-label>Pick -Up</mat-label>
+                    <mat-select
+                      appearance="outline"
+                      placeholder="Pick -Up"
+                      formControlName="pickUpCtrl"
+                      required
+                      restrictKeywordValidator="Cat"
+                    >
+                      <mat-option>--</mat-option>
+                      <mat-option
+                        *ngFor="let pickUp of pickUps"
+                        [value]="pickUp.name"
+                      >
+                        {{ pickUp.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                 </div>
+              </td>
+
+              <td style="border: 3px solid gray;">             
+                  <!-- pickUpDeliveryForm dynamic form --> 
+                 <form [formGroup]="pickUpDeliveryForm">
+                   <div formArrayName="pickUpDelivery" class="pl-4">
+
+                 <!--  s-->
+                 <div *ngFor="let pickUpDeliveryData of pickUpDelivery().controls; let Index=index">
+        <div [formGroupName]="Index"  class="my-4">
+  
+          <mat-form-field style="width:25% !important;"
+          appearance="outline"
+          class="mx-1 component--mat-form-field__custom-input"
+        >
+           <!-- <mat-label>Enter Name</mat-label>  -->
+        <input
+            matInput  
+            placeholder="3.00"
+            formControlName="pickUpQuantity"
+            required/>
+           <!-- <mat-error
+            class="error"
+            *ngIf="
+              firstFormGroup.get('pickUpQuantity').hasError('required') ||
+              firstFormGroup.get('pickUpQuantity').touched">
+              Pick Up Quantity is required
+           </mat-error> -->
+          </mat-form-field>
+  
+          <mat-form-field style="width:45% !important;"
+          appearance="outline"
+          class="component--mat-form-field__custom-input"
+        >
+       <!-- <mat-label>unitOfMeasurement</mat-label>  -->
+         <mat-select
+            appearance="outline"
+            formControlName="pickUpQuantityUnitOfMeasurement"
+            required
+            restrictKeywordValidator="Cat"
+          >
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let unitOfMeasurement of unitOfMeasurement" [value]="unitOfMeasurement.name">
+              {{ unitOfMeasurement.name }}
+            </mat-option>
+          </mat-select>
+          <!-- <mat-error *ngIf="firstFormGroup.get('unitOfMeasurement').hasError('required')">Please choose an option</mat-error>
+          <mat-error *ngIf="firstFormGroup.get('unitOfMeasurement').hasError('invalidValue')">Please choose any other</mat-error> -->
+          </mat-form-field>  
+          
+          <span class="pl-2 pt-3"><img (click)="addPickUpDelivery()" src="../../../../../../assets/images/plus.png" alt=""></span>
+          <span class="pl-2 pt-3"><img (click)="removePickUpDelivery(Index)"  src="../../../../../../assets/images/minus.png" alt=""></span>
+        </div>
+                 </div>
+                 <!-- e -->
+
+                   </div>
+                  </form>
+                 <!-- {{this.pickUpDeliveryForm.value | json}} -->
+                 <!-- pickUpDeliveryForm dynamic form -->
+              </td>
+
+              <td style="border: 3px solid gray;"></td>
+              </tr>
+
+             <!-- second row -->
+             <tr>
+               <td style="border: 3px solid gray;">
+                <div class="flex justify-center my-6 mx-2">
+                  <mat-form-field style="width:100% !important;"
+                    appearance="outline"
+                    class="w-full component--mat-form-field__custom-input"
+                  >
+                    <mat-label>Enroute Location</mat-label>
+                    <mat-select
+                      appearance="outline"
+                      placeholder="Biz Name 1"
+                      formControlName="enrouteLocation"
+                      required
+                      restrictKeywordValidator="Cat"
+                    >
+                      <mat-option>--</mat-option>
+                      <mat-option
+                        *ngFor="let enrouteLocation of enrouteLocations"
+                        [value]="enrouteLocation.name"
+                      >
+                        {{ enrouteLocation.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                 </div>
+               </td>
+
+               <td style="border: 3px solid gray;">
+                <div class="flex justify-center my-6 mx-2">
+                  <mat-form-field style="width:100% !important;"
+                    appearance="outline"
+                    class="w-full component--mat-form-field__custom-input"
+                  >
+                    <mat-label>Pick-Up + Delivery</mat-label>
+                    <mat-select
+                      appearance="outline"
+                      placeholder="Pick -Up"
+                      formControlName="pickUpDelivery"
+                      required
+                      restrictKeywordValidator="Cat"
+                    >
+                      <mat-option>--</mat-option>
+                      <mat-option
+                        *ngFor="let pickUpDelivery of pickUpDeliverys"
+                        [value]="pickUpDelivery.name"
+                      >
+                        {{ pickUpDelivery.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                 </div>
+               </td>
+
+               <td style="border: 3px solid gray;">
+                <!-- pickUpAndDeliveryQuantity dynamic form  -->
+               <form [formGroup]="pickUpAndDeliveryQuantityForm">
+                 <div formArrayName="pickUpAndDeliveryQuantity" class="pl-4">
+                   <div *ngFor="let pickUpAndDeliveryQuantityData of pickUpAndDeliveryQuantity().controls; let Index=index">
+                  <div [formGroupName]="Index" class="my-4 ml-2"> 
+                    
+                    <mat-form-field  style="width:25% !important;"
+        appearance="outline" 
+        class="component--mat-form-field__custom-input"
+      >
+         <!-- <mat-label>Enter Name</mat-label>  -->
+      <input
+          matInput  
+          placeholder="3.00"
+          formControlName="pickUpAndDeliveryQuantity"
+          required/>
+         <!-- <mat-error
+          class="error"
+          *ngIf="
+            firstFormGroup.get('pickUpQuantity').hasError('required') ||
+            firstFormGroup.get('pickUpQuantity').touched">
+            Pick Up Quantity is required
+         </mat-error> -->
+                    </mat-form-field>
+
+                   <mat-form-field style="width:45% !important;"
+        appearance="outline"
+        class="mx-1 component--mat-form-field__custom-input"
+      >
+     <!-- <mat-label>unitOfMeasurement</mat-label>  -->
+       <mat-select
+          appearance="outline"
+          formControlName="pickUpAndDeliveryUnitOfMeasurement"
+          required
+          restrictKeywordValidator="Cat"
+        >
+          <mat-option>--</mat-option>
+          <mat-option *ngFor="let unitOfMeasurement of unitOfMeasurement" [value]="unitOfMeasurement.name">
+            {{ unitOfMeasurement.name }}
+          </mat-option>
+        </mat-select>
+        <!-- <mat-error *ngIf="firstFormGroup.get('unitOfMeasurement').hasError('required')">Please choose an option</mat-error>
+        <mat-error *ngIf="firstFormGroup.get('unitOfMeasurement').hasError('invalidValue')">Please choose any other</mat-error> -->
+                    </mat-form-field>  
+
+
+        <!-- <button (click)="condition = !condition">toogle</button> -->
+
+        <span class="ml-2 mt-3"><img (click)="addPickUpAndDeliveryUnitOfMeasurement()" src="../../../../../../assets/images/plus.png" alt=""></span>
+        <span class="ml-2 mt-3"><img (click)="removePickUpAndDeliveryUnitOfMeasurement(Index)"  src="../../../../../../assets/images/minus.png" alt=""></span>
+
+        </div>
+      </div>
+     </div>
+               </form>
+                <!-- {{this.pickUpAndDeliveryQuantityForm.value | json}} -->
+                <!-- pickUpAndDeliveryQuantity dynamic form end -->
+               </td>
+
+               <td style="border: 3px solid gray;">
+                     <!-- pickUpAndDeliveryQuantity dynamic form  -->
+                     <form [formGroup]="pickUpAndDeliveryQuantityForm1">
+                      <div formArrayName="pickUpAndDeliveryQuantity1" class="pl-4">
+                        <div *ngFor="let pickUpAndDeliveryQuantityData1 of pickUpAndDeliveryQuantity1().controls; let Index=index">
+                          <div [formGroupName]="Index" class="my-4"> 
+                            <mat-form-field 
+                            style="width:25% !important;"
+                            appearance="outline"
+                            class="mx-1 component--mat-form-field__custom-input"
+                          >
+                             <!-- <mat-label>Enter Name</mat-label>  -->
+                          <input
+                              matInput  
+                              placeholder="3.00"
+                              formControlName="pickUpAndDeliveryQuantity1"
+                              required/>
+                             <!-- <mat-error
+                              class="error"
+                              *ngIf="
+                                firstFormGroup.get('pickUpQuantity').hasError('required') ||
+                                firstFormGroup.get('pickUpQuantity').touched">
+                                Pick Up Quantity is required
+                             </mat-error> -->
+                            </mat-form-field>
+                    
+                            <mat-form-field 
+                            style="width:45% !important;"
+                            appearance="outline"
+                            class="component--mat-form-field__custom-input"
+                          >
+                         <!-- <mat-label>unitOfMeasurement</mat-label>  -->
+                           <mat-select
+                              appearance="outline"
+                              formControlName="pickUpAndDeliveryUnitOfMeasurement1"
+                              required
+                              restrictKeywordValidator="Cat"
+                            >
+                              <mat-option>--</mat-option>
+                              <mat-option *ngFor="let unitOfMeasurement of unitOfMeasurement" [value]="unitOfMeasurement.name">
+                                {{ unitOfMeasurement.name }}
+                              </mat-option>
+                            </mat-select>
+                            <!-- <mat-error *ngIf="firstFormGroup.get('unitOfMeasurement').hasError('required')">Please choose an option</mat-error>
+                            <mat-error *ngIf="firstFormGroup.get('unitOfMeasurement').hasError('invalidValue')">Please choose any other</mat-error> -->
+                            </mat-form-field>  
+                    
+                            <span class="pl-2 pt-3"><img (click)="addPickUpAndDeliveryUnitOfMeasurement1()" src="../../../../../../assets/images/plus.png" alt=""></span>
+                            <span class="pl-2 pt-3"><img (click)="removePickUpAndDeliveryUnitOfMeasurement1(Index)"  src="../../../../../../assets/images/minus.png" alt=""></span>
+                          </div>
+                        </div>
+                      </div>
+                     </form>
+                                    <!-- {{this.pickUpAndDeliveryQuantityForm.value | json}} -->
+                                    <!-- pickUpAndDeliveryQuantity dynamic form end -->
+               </td>
+             </tr>
+
+             <!-- thrd row -->
+              <tr>
+               <td style="border: 3px solid gray;">
+                     <div class="flex justify-center my-4 mx-2">
+                       <mat-form-field
+                       style="width:100% !important;"
+                         appearance="outline"
+                         class="w-full component--mat-form-field__custom-input"
+                       >
+                         <mat-label>End Delivery Location</mat-label>
+                         <mat-select
+                           appearance="outline"
+                           placeholder="Biz Name 1"
+                           formControlName="endDeliveryLocation"
+                           required
+                           restrictKeywordValidator="Cat"
+                         >
+                           <mat-option>--</mat-option>
+                           <mat-option
+                             *ngFor="let endDeliveryLocation of endDeliveryLocations"
+                             [value]="endDeliveryLocation.name"
+                           >
+                             {{ endDeliveryLocation.name }}
+                           </mat-option>
+                         </mat-select>
+                       </mat-form-field>
+                      </div>
+               </td>
+
+               <td style="border: 3px solid gray;">
+                      <div class="flex justify-center my-4 mx-2">
+                        <mat-form-field
+                         style="width:100% !important;"
+                          appearance="outline"
+                          class="w-full component--mat-form-field__custom-input"
+                        >
+                          <mat-label>Delivery</mat-label>
+                          <mat-select
+                            appearance="outline"
+                            placeholder="Pick -Up"
+                            formControlName="Delivery"
+                            required
+                            restrictKeywordValidator="Cat"
+                          >
+                            <mat-option>--</mat-option>
+                            <mat-option
+                              *ngFor="let delivery of deliverys"
+                              [value]="delivery.name"
+                            >
+                              {{ delivery.name }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                       </div>
+               </td>
+
+               <td style="border: 3px solid gray;"></td>
+               <td style="border: 3px solid gray;">
+                                        <!-- pickUpDeliveryForm dynamic form --> 
+
+                 <form [formGroup]="deliveryForm">
+                        <div formArrayName="DeliveryQuantity" class="pl-4">
+
+                              <div *ngFor="let DeliveryData of DeliveryQuantity().controls; let Index=index">
+                                 <div [formGroupName]="Index" class="my-4">
+
+                               <mat-form-field 
+        style="width:25% !important;"
+        appearance="outline"
+        class="mx-1 component--mat-form-field__custom-input"
+      >
+         <!-- <mat-label>Enter Name</mat-label>  -->
+      <input
+          matInput  
+          placeholder="3.00"
+          formControlName="deliveryQuantity"
+          required/>
+         <!-- <mat-error
+          class="error"
+          *ngIf="
+            firstFormGroup.get('pickUpQuantity').hasError('required') ||
+            firstFormGroup.get('pickUpQuantity').touched">
+            Pick Up Quantity is required
+         </mat-error> -->
+                               </mat-form-field>
+
+                               <mat-form-field
+        style="width:45% !important;"
+        appearance="outline"
+        class="component--mat-form-field__custom-input"
+      >
+
+     <!-- <mat-label>unitOfMeasurement</mat-label>  -->
+       <mat-select
+          appearance="outline"
+          formControlName="deliveryQuantityUnitOfMeasurement"
+          required
+          restrictKeywordValidator="Cat"
+        >
+          <mat-option>--</mat-option>
+          <mat-option *ngFor="let unitOfMeasurement of unitOfMeasurement" [value]="unitOfMeasurement.name">
+            {{ unitOfMeasurement.name }}
+          </mat-option>
+        </mat-select>
+        <!-- <mat-error *ngIf="firstFormGroup.get('unitOfMeasurement').hasError('required')">Please choose an option</mat-error>
+        <mat-error *ngIf="firstFormGroup.get('unitOfMeasurement').hasError('invalidValue')">Please choose any other</mat-error> -->
+                               </mat-form-field>  
+
+                               <span class="ml-2 mt-3"><img (click)="addDelivery()" src="../../../../../../assets/images/plus.png" alt=""></span>
+                               <span class="ml-2 mt-3"><img (click)="removeDelivery(Index)"  src="../../../../../../assets/images/minus.png" alt=""></span>
+                             </div>
+                            </div>
+                       </div>
+                  </form>
+               <!-- {{this.deliveryForm.value | json}} -->
+               <!-- DeliveryForm dynamic form -->                    
+                </td>
+
+              </tr>
+
+              <!-- forth -->
+              <tr>
+                  <td colspan="4" style="border: 3px solid gray;">
+                    <div class="flex">
+                      <div class="flex my-4">
+                        <div class="ml-2"> <mat-checkbox></mat-checkbox> </div>
+                        <div class="ml-4 primary-medium-font-size">Permit Change of Route Plan</div>
+                      </div>
+                          <div class="ml-48 mt-5"><b>Total Pick-Up Qty:</b> </div>
+                          <div class="primary-text-color h-10 w-28 ml-5 my-2 pl-2 pt-2 border-x-white  border-y-4 border-solid border-y-gray-500">10.00 MT</div> 
+                  
+                          <div class="ml-40 mt-5"><b>Total Drop Qty</b> </div>
+                          <div class="primary-text-color h-10 w-28 ml-4  my-2 pl-2 pt-2 border-x-white  border-y-4 border-solid border-y-gray-500">10.00</div> 
+                    </div>                          
+                  </td>           
+              </tr>
+
+          </table>
+          <!-- dynamic form -->
+           </div>
+
+
+
+
+
+
+
+           <!-- datetime -->          
+           <!-- <div class="mt-10 lt-sm:w-full md:w-full gt-lg:w-1/2 component-date-picker__reduced-space">
+            <mat-form-field
+              class="w-full md:w-full gt-lg:w-full component--mat-form-field__custom-input "
+              appearance="outline"
+              (click)="datetimePicker.open()"
+
+            >
+            <mat-label>Date Time Picker</mat-label>
+              <input
+                [mtxDatetimepicker]="datetimePicker"
+                formControlName="datetime"
+                matInput
+                required
+                readonly
+              />
+              <mtx-datetimepicker-toggle
+                [for]="datetimePicker"
+                matSuffix
+             
+              ></mtx-datetimepicker-toggle>
+              <mtx-datetimepicker
+                #datetimePicker
+                [type]="type"
+                [mode]="mode"
+                [multiYearSelector]="multiYearSelector"
+                [startView]="startView"
+                [twelvehour]="twelvehour"
+                [timeInterval]="timeInterval"
+                [touchUi]="touchUi"
+                ></mtx-datetimepicker>
+              <mat-error
+                *ngIf="
+                  firstFormGroup.get('datetime').hasError('required') ||
+                  firstFormGroup.get('datetime').touched
+                "
+              >
+                Date and Time is required
+              </mat-error>
+            </mat-form-field>
+           </div> -->
+
+
+
+
+
+
+
+           <div class="flex flex-wrap mt-8 ">
+            <div>Preferred Truck Type:</div>
+            <div class="lt-sm:mt-4 md:ml-80 gt-lg:ml-52">Illustration Image: <span class="lt-sm:ml-6 md:ml-6 gt-lg:ml-8"><button class="primary-button" mat-raised-button >Add/Edit</button></span></div>
+           </div>
+
+          <!-- number of wheels -->
+           <div class="select mt-8 lt-sm:w-full md:w-full gt-lg:w-1/2">
+             <mat-form-field appearance="outline" class="w-full md:w-full gt-lg:w-1/2 component--mat-form-field__custom-input">
+              <mat-label>No Of Wheeler</mat-label>
+              <mat-select appearance="outline" placeholder="No of Wheels" formControlName="numberOfWheels" required restrictKeywordValidator="Cat">
+                <mat-option>--</mat-option>
+                <mat-option *ngFor="let numberOfWheel of numberOfWheels" [value]="numberOfWheel.name">
+                  {{ numberOfWheel.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="firstFormGroup.get('numberOfWheels').hasError('required')">Please choose an number of wheels</mat-error>
+              <mat-error *ngIf="firstFormGroup.get('numberOfWheels').hasError('invalidValue')">Please choose any other</mat-error>
+             </mat-form-field>
+           </div>
+
+         <!-- truckBodyTypes -->
+         <div class="select mt-8 lt-sm:w-full md:w-full gt-lg:w-1/2">
+          <mat-form-field appearance="outline" class="w-full md:w-full gt-lg:w-1/2 component--mat-form-field__custom-input">
+            <mat-label>Truck Body Type</mat-label>
+            <mat-select appearance="outline" placeholder="Truck Body Type" formControlName="truckBodyType" required restrictKeywordValidator="Cat">
+              <mat-option>--</mat-option>
+              <mat-option *ngFor="let truckBodyType of truckBodyTypes" [value]="truckBodyType.name">
+                {{ truckBodyType.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="firstFormGroup.get('truckBodyType').hasError('required')">Please choose an animal</mat-error>
+            <mat-error *ngIf="firstFormGroup.get('truckBodyType').hasError('invalidValue')">Please choose any other</mat-error>
+          </mat-form-field>
+         </div>
+
+            <!-- truck image -->
+         <div class="mt-4">  <img src="../../../../../../assets/images/body_truck.png" alt=""> </div>
+ 
+         <!-- map image -->
+         <div> <img class="w-full" src="../../../../../../assets/images/map.png" alt=""> </div>
+    
+         <!-- next button -->
+         <div class="flex justify-end mt-4"> 
+          <div><button [disabled]="firstFormGroup.invalid &&  pickUpDeliveryForm.invalid && pickUpAndDeliveryQuantityForm.invalid && pickUpAndDeliveryQuantityForm1.invalid && deliveryForm.invalid" class="primary-button" mat-raised-button matStepperNext>Next</button></div>
+         </div>
+  
+        </div>
+        </form>
+       </mat-step>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- second stepper -->
+       <mat-step [stepControl]="secondFormGroup" label="Freight Estimate and Payment">
+        <form autocomplete="off" [formGroup]="secondFormGroup" class="space-y-5 pt-2">
+                          <!-- table  overflow-x:auto; -->
+        <div class="mt-4" style="overflow-x:auto;">
+          <table style="width: 100%; min-width:990px; border-collapse: collapse;">
+            <tr >
+              <th style="border: 3px solid gray;"><span class="primary-medium-font-size">Payment by / Payment Terms</span></th>
+              <th style="border: 3px solid gray;"><span class="primary-medium-font-size">Freight Computation:</span></th>
+              <th style="border: 3px solid gray;"> <span class="secondary-medium-font-size">Freight Estimate</span><span class="primary-medium-font-size px-2">Rs.</span></th>
+            </tr>
+
+          <!-- first row -->
+           <tr>
+            <td style="border: 3px solid gray; padding-left:15px;">
+              <div>
+                <div class="secondary-medium-font-size">Start Location:</div>
+                <div class="black-medium-font-size">Biz Name 1</div>
+                <div class="black-small-font-size">Hosur, Krishnagiri, Tamil Nadu</div>
+              </div>
+            </td>
+
+            <td style="border: 3px solid gray;">
+              <div class="select flex justify-center py-4 px-4">
+                <mat-form-field appearance="outline" class="component--mat-form-field__custom-input">
+                  <mat-label>Not Applicable</mat-label>
+                  <mat-select appearance="outline" placeholder="Not Applicable" formControlName="notApplicable" required restrictKeywordValidator="Cat">
+                    <mat-option>--</mat-option>
+                    <mat-option *ngFor="let notApplicable of notApplicables" [value]="notApplicable.name">
+                      {{ notApplicable.name }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="secondFormGroup.get('notApplicable').hasError('required')">Please choose an option</mat-error>
+                  <mat-error *ngIf="secondFormGroup.get('notApplicable').hasError('invalidValue')">Please choose any other</mat-error>
+                </mat-form-field>
+               </div>
+            </td>
+            
+            <td style="border: 3px solid gray;"></td>
+
+           </tr>
+
+
+          <!-- second row -->
+           <tr>
+            <td style="border: 3px solid gray; padding-left:15px;">
+              <div class="py-4">
+                <div class="secondary-medium-font-size">Enroute Location  #1:</div>
+                <div class="black-medium-font-size">Biz Name 1</div>
+                <div class="black-small-font-size">Hosur, Krishnagiri, Tamil Nadu</div>
+              </div>
+
+              <div class="select py-3">
+                <mat-form-field appearance="outline" class="component--mat-form-field__custom-input">
+                  <mat-label>Payment Terms:</mat-label>
+                  <mat-select appearance="outline" placeholder="Lump Sum" formControlName="paymentTerm" required restrictKeywordValidator="Cat">
+                    <mat-option>--</mat-option>
+                    <mat-option *ngFor="let paymentTerm of paymentTerms" [value]="paymentTerm.name">
+                      {{ paymentTerm.name }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="secondFormGroup.get('lumpSum').hasError('required')">Please choose an option</mat-error>
+                  <mat-error *ngIf="secondFormGroup.get('lumpSum').hasError('invalidValue')">Please choose any other</mat-error>
+                </mat-form-field>
+               </div>
+            </td>
+
+            <td style="border: 3px solid gray;">
+              <div class="select flex justify-center py-3 px-4">
+                <mat-form-field appearance="outline" class="component--mat-form-field__custom-input">
+                  <mat-label>Lump Sum</mat-label>
+                  <mat-select appearance="outline" placeholder="Lump Sum" formControlName="lumpSum" required restrictKeywordValidator="Cat">
+                    <mat-option>--</mat-option>
+                    <mat-option *ngFor="let lumpSum of lumpSums" [value]="lumpSum.name">
+                      {{ lumpSum.name }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="secondFormGroup.get('lumpSum').hasError('required')">Please choose an option</mat-error>
+                  <mat-error *ngIf="secondFormGroup.get('lumpSum').hasError('invalidValue')">Please choose any other</mat-error>
+                </mat-form-field>
+               </div>
+            </td>
+
+            <td style="border: 3px solid gray;">
+              <div class="px-4">
+                <div class="name flex justify-center">
+                  <mat-form-field
+                    appearance="outline"
+                    class="component--mat-form-field__custom-input"
+                  >
+                    <!-- <mat-label>indicate Lumpsum</mat-label> -->
+                    <input
+                      matInput
+                      formControlName="indicateLumpsum"
+                      required/>
+        
+                     <mat-error
+                      class="error"
+                      *ngIf="
+                      secondFormGroup.get('indicateLumpsum').hasError('required') ||
+                      secondFormGroup.get('indicateLumpsum').touched">
+                      Indicate Lumpsum is required
+                     </mat-error>
+        
+                  </mat-form-field>
+                </div>
+                <div class="flex justify-center mt-2 red-small-font-size">12500 - indicative-Lumpsum</div>
+  
+              </div>
+            </td>
+
+           </tr>
+
+          <!-- thrd row -->
+          <tr>
+            <td style="border: 3px solid gray; padding-left:15px;">
+              <div class="py-4">
+                <div class="secondary-medium-font-size">End Delivery Location:</div>
+                <div class="black-medium-font-size">Biz Name 3</div>
+                <div class="black-small-font-size">Bengaluru, Karanataka</div>
+              </div>
+
+              <div class="select py-3">
+                <mat-form-field appearance="outline" class="component--mat-form-field__custom-input">
+                  <mat-label>Payment Terms:</mat-label>
+                  <mat-select appearance="outline" placeholder="paymentTerm" formControlName="paymentTerm3" required restrictKeywordValidator="Cat">
+                    <mat-option>--</mat-option>
+                    <mat-option *ngFor="let paymentTerm3 of paymentTerms3" [value]="paymentTerm3.name">
+                      {{ paymentTerm3.name }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="secondFormGroup.get('paymentTerm3').hasError('required')">Please choose an option</mat-error>
+                  <mat-error *ngIf="secondFormGroup.get('paymentTerm3').hasError('invalidValue')">Please choose any other</mat-error>
+                </mat-form-field>
+               </div>
+
+            </td>
+
+            <td style="border: 3px solid gray;">
+              <div class="select flex justify-center px-4">
+                <mat-form-field appearance="outline" class="component--mat-form-field__custom-input">
+                  <mat-label>Lump Sum</mat-label>
+                  <mat-select appearance="outline" placeholder="Lump Sum" formControlName="lumpSum" required restrictKeywordValidator="Cat">
+                    <mat-option>--</mat-option>
+                    <mat-option *ngFor="let lumpSum of lumpSums" [value]="lumpSum.name">
+                      {{ lumpSum.name }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="secondFormGroup.get('lumpSum').hasError('required')">Please choose an option</mat-error>
+                  <mat-error *ngIf="secondFormGroup.get('lumpSum').hasError('invalidValue')">Please choose any other</mat-error>
+                </mat-form-field>
+               </div>
+            </td>
+
+
+            <td style="border: 3px solid gray;">
+              <div>
+                <div class="name flex justify-center py-3 px-4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="component--mat-form-field__custom-input"
+                  >
+
+                  
+                    <!-- <mat-label>indicate Lumpsum</mat-label> -->
+                    <input
+                      matInput
+                      formControlName="indicateLumpsum1"
+                      required/>
+        
+                     <mat-error
+                      class="error"
+                      *ngIf="
+                      secondFormGroup.get('indicateLumpsum1').hasError('required') ||
+                      secondFormGroup.get('indicateLumpsum1').touched">
+                      Indicate Lumpsum is required
+                     </mat-error>
+        
+                  </mat-form-field>
+                </div>
+
+                <div class="flex justify-center mt-2 red-small-font-size">12500 - indicative-Lumpsum</div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- forth row -->
+          <tr>
+            <td colspan="3" style="border: 3px solid gray;">
+              <div class="flex justify-end">
+                    <div class="mt-5"><b>Total Freight Estimate:</b> </div>
+                    <div class="primary-text-color h-10 w-28 mr-40  my-2 pl-2 pt-2 border-x-white  border-y-4 border-solid border-y-gray-500">26000.00</div> 
+              </div>                          
+            </td>           
+          </tr>
+          </table>
+          <!-- dynamic form -->
+        </div>
+
+
+        <div class="flex justify-end">
+          <div></div><button class="primary-button" mat-raised-button matStepperPrevious>Back</button>
+          <div >
+            <button
+            [disabled]="secondFormGroup.invalid"
+              class="primary-button"
+              mat-raised-button
+              matStepperNext
+              style="margin-left: 10px"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+     
+
+
+
+        </form>
+       </mat-step>
+
+
+
+
+
+
+
+
+
+       <!-- third stepper -->
+       <mat-step [stepControl]="thirdFormGroup" label="Freight Payment and Billing Information">
+              <form autocomplete="off" [formGroup]="thirdFormGroup" class="space-y-5 pt-2">
+    
+                                <!-- table  overflow-x:auto; -->
+              <div class="mt-4" style="overflow-x:auto;">
+                <table style="width: 100%; min-width:990px; border-collapse: collapse;">
+                 <tr >
+                    <th style="border: 3px solid gray;"><span class="primary-medium-font-size">Businesses:</span></th>
+                    <th style="border: 3px solid gray;"><span class="primary-medium-font-size">Freight Estimate</span><span class="primary-medium-font-size px-2">Rs.</span></th>
+                    <th style="border: 3px solid gray;"> <span class="secondary-medium-font-size">Freight Paid By and Payment Amount</span><span class="primary-medium-font-size px-2">Rs.</span></th>
+                    <th style="border: 3px solid gray;"> <span class="secondary-medium-font-size">Freight Invoice To:</span></th>
+                 </tr>
+              <!-- first row -->
+              <tr>
+                  <td style="border: 3px solid gray; padding-left:15px;">
+                    <div>
+                      <div class="secondary-medium-font-size">Start Location:</div>
+                      <div class="black-medium-font-size">Biz Name 1</div>
+                      <div class="black-small-font-size">Hosur, Krishnagiri, Tamil Nadu</div>
+                    </div>
+                  </td>
+                  <td style="border: 3px solid gray;">
+                    
+                  </td>
+                  <td style="border: 3px solid gray;">
+                   <div class="ml-10"><mat-checkbox></mat-checkbox></div> 
+                  </td>
+
+                  <td style="border: 3px solid gray;">
+                    <div class="ml-10"><mat-checkbox></mat-checkbox></div> 
+                  </td>
+
+              </tr>
+              
+      
+              <!-- second row -->
+              <tr>
+                  <td style="border: 3px solid gray; padding-left:15px;">
+                    <div class="py-4">
+                      <div class="secondary-medium-font-size">Enroute Location  #1:</div>
+                      <div class="black-medium-font-size">Biz Name 1</div>
+                      <div class="black-small-font-size">Hosur, Krishnagiri, Tamil Nadu</div>
+                    </div>
+                  </td>
+      
+                  <td style="border: 3px solid gray;">
+                     <div class="flex justify-center">12500.00</div>
+                  </td>
+      
+                  <td style="border: 3px solid gray;">
+                      <div class="name ml-10 flex">
+
+                       <div class="mt-8">
+                        <span><mat-checkbox></mat-checkbox></span> 
+                       </div>
+           
+                        <div>
+                          <mat-form-field
+                          appearance="outline"
+                          class="ml-8 my-5 component--mat-form-field__custom-input"
+                        >
+                          <!-- <mat-label>indicate Lumpsum</mat-label> -->
+                          <input
+                            matInput
+                            formControlName="textControl1"
+                            required/>
+              
+                           <mat-error
+                            class="error"
+                            *ngIf="
+                            thirdFormGroup.get('textControl1').hasError('required') ||
+                            thirdFormGroup.get('textControl1').touched">
+                            Payment is required
+                           </mat-error>
+              
+                        </mat-form-field>
+                        </div>
+
+
+
+                      </div>
+                
+
+                  </td>
+            
+                  <td style="border: 3px solid gray;">
+                     <div class="ml-10"><mat-checkbox></mat-checkbox></div> 
+                  </td>
+              </tr>
+              
+              <!-- thrd row -->
+              <tr>
+                  <td style="border: 3px solid gray; padding-left:15px;">
+                    <div class="py-4">
+                      <div class="secondary-medium-font-size">End Delivery Location:</div>
+                      <div class="black-medium-font-size">Biz Name 3</div>
+                      <div class="black-small-font-size">Bengaluru, Karanataka</div>
+                    </div>
+                  </td>
+  
+                  <td style="border: 3px solid gray;">
+                    <div class="flex justify-center">12500.00</div>
+                  </td>
+    
+                  <td style="border: 3px solid gray;">
+                    <div class="name ml-10 flex">
+                      <div class="mt-8">
+                         <span class=""><mat-checkbox></mat-checkbox></span> 
+                      </div>
+
+                      <div>
+                        <mat-form-field
+                        appearance="outline"
+                        class="ml-8 my-5 component--mat-form-field__custom-input">
+                        <!-- <mat-label>indicate Lumpsum</mat-label> -->
+                        <input
+                          matInput
+                          formControlName="textControl2"
+                          required/>
+            
+                         <mat-error
+                          class="error"
+                          *ngIf="
+                          thirdFormGroup.get('textControl2').hasError('required') ||
+                          thirdFormGroup.get('textControl2').touched">
+                          Payment is required
+                         </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                    </div>
+                  </td>
+          
+                 <td style="border: 3px solid gray;">
+                   <div class="ml-10"><mat-checkbox></mat-checkbox></div> 
+                 </td>
+              </tr>
+
+              <!-- forth row -->
+              <tr>
+                      <td style="border: 3px solid gray; padding-left:15px;">
+
+                        <div class="py-4">
+                          <div class="primary-medium-font-size">Select Other Business:</div>
+                          <div class="black-medium-font-size">Biz Name 4</div>
+                          <div class="black-small-font-size">Bengaluru, Karanataka</div>
+                        </div>
+
+                      </td>
+      
+                      <td style="border: 3px solid gray;">
+                      </td>
+        
+                      <td style="border: 3px solid gray;">
+                        <div class="name ml-10">
+                          <span class=" pt-2"><mat-checkbox></mat-checkbox></span> 
+                        </div>
+                      </td>
+              
+                     <td style="border: 3px solid gray;">
+                       <div class="ml-10"><mat-checkbox></mat-checkbox></div> 
+                     </td>
+              </tr>
+
+          </table>
+
+            <div class="flex">
+              <div class="ml-48 mt-5"><b>Total Freight Estimate:</b> </div>
+              <div class="primary-text-color h-10 w-28 ml-5 my-2 pl-2 pt-2 border-x-white  border-y-4 border-solid border-y-gray-500">10.00 MT</div> 
+  
+              <div class="ml-24 mt-5"><b>Total Freight Payment:</b> </div>
+              <div class="primary-text-color h-10 w-28 ml-4  my-2 pl-2 pt-2 border-x-white  border-y-4 border-solid border-y-gray-500">10.00</div>           
+             </div>  
+          </div>
+
+
+
+          <div class="flex justify-end">
+            <div>
+              <button class="primary-button" mat-raised-button matStepperPrevious>
+                Back
+              </button>
+            </div>
+            <div>
+                    <button
+                    [disabled]="thirdFormGroup.invalid"
+                      class="primary-button"
+                      mat-raised-button
+                      matStepperNext
+                      style="margin-left: 10px"
+                    >
+                      Next
+                    </button>
+            </div>
+          </div>
+
+
+        </form>
+       </mat-step>
+
+
+
+        <!-- forth stepper -->
+       <mat-step [stepControl]="forthFormGroup" label="Link Files from Cloud Storage">
+          <form autocomplete="off" [formGroup]="forthFormGroup" class="space-y-5 pt-2">
+            <div class="py-4">
+              <div class="primary-medium-font-size flex justify-center">Add/Edit Freight Plan</div>
+              <div class="secondary-medium-font-size  flex justify-center mt-4">Link Files from Cloud Storage</div>
+              
+            
+              <!-- new table -->
+
+              <!-- last screen table1 code  -->
+            <div style="overflow-x:auto;"  id="pdfTable" class="component--mat-table__custom-table mt-10">
+                 <table   class="table table-bordered table-sm w-full" id="excel_table" mat-table [dataSource]="dataSource2">
+                    
+                  
+          <!-- Checkbox Column -->
+          <ng-container matColumnDef="select">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              style="width: 0px; max-width: 50px; word-wrap: break-word"
+            >
+              <mat-checkbox
+                (change)="$event ? masterToggle() : null"
+                [checked]="selection.hasValue() && isAllSelected()"
+                [indeterminate]="selection.hasValue() && !isAllSelected()"
+              >
+              </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox
+                (click)="$event.stopPropagation()"
+                (change)="$event ? selection.toggle(row) : null"
+                [checked]="selection.isSelected(row)"
+              >
+              </mat-checkbox>
+            </td>
+          </ng-container>
+                  
+                  <!-- Position Column -->
+                    <ng-container matColumnDef="document_name" style="border-right: 1px solid #9A9A9A;">
+                      <th mat-header-cell *matHeaderCellDef style="width:100px; max-width: 150px; word-wrap: break-word;margin-left: 0px; padding: 10px;">Document Name</th>
+                        <td style="padding:10px;" mat-cell *matCellDef="let element">
+                         <div class="flex">
+                           <!-- <div class=""><mat-checkbox value="1"></mat-checkbox> </div>  -->
+                           <div class="pt-1 ml-2">{{ element.document_name }}</div>
+                         </div>
+                        </td>      
+                    </ng-container>
+
+                    <!-- Name Column -->
+                     <ng-container matColumnDef="document_ref_no">
+                        <th mat-header-cell *matHeaderCellDef style="width:100px; max-width: 150px; word-wrap: break-word;padding: 10px;">Document Ref No</th>
+                        <td style="padding:10px;" mat-cell *matCellDef="let element">
+                            {{ element.document_ref_no }} 
+                        </td>
+                     </ng-container>
+                  
+                     <!-- business_groups_who_can_access_dispatch_documents Column -->
+                     <ng-container matColumnDef="business_groups_who_can_access_dispatch_documents">
+                          <th mat-header-cell *matHeaderCellDef style="width:380px; max-width: 380px;word-wrap: break-word; padding: 10px;">Business Groups Who Can Access Dispatch Documents</th>
+                          <td style="padding: 10px;" mat-cell *matCellDef="let element">
+                            <!-- {{ element.business_groups_who_can_access_dispatch_documents }} -->
+                            
+                           <form [formGroup]="businessGroupsWhoCanAccessDispatchDocumentsForm">
+           <div formArrayName="businessGroupsWhoCanAccessDispatchDocuments">
+            <div *ngFor="let businessGroupsWhoCanAccessDispatchDocumentsData of BusinessGroupsWhoCanAccessDispatchDocuments().controls; let empIndex=index">
+               <div [formGroupName]="empIndex" class="flex">
+                <div><mat-checkbox></mat-checkbox></div> 
+                 <div class="ml-3 font-semibold">Biz Name <span>1</span></div>
+                 <div>
+                  <span class="ml-2 mt-3"><img (click)="addBusinessGroupsWhoCanAccessDispatchDocuments()" src="../../../../../../assets/images/plus.png" alt=""></span>
+                  <span class="ml-2 mt-3"><img (click)="removeBusinessGroupsWhoCanAccessDispatchDocuments(empIndex)"  src="../../../../../../assets/images/minus.png" alt=""></span>
+                 </div>
+
+              </div>
+            </div>
+          </div>
+                           </form>
+
+                           <!-- {{this.businessGroupsWhoCanAccessDispatchDocumentsForm.value | json}} -->
+                          </td>
+                     </ng-container>
+
+                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+                 </table>                  
+            </div>
+
+                 <!-- container -->
+          </div>
+
+              <!-- new table end -->
+
+
+  <!-- paginator filter -->
+<div class="">                    
+  <mat-toolbar-row class=" component--mat-paginator__remove-space">
+    <mat-paginator
+    fxLayoutAlign="start start"
+    (page)="
+    paginatorHtmlElement.nativeElement.querySelector(
+    'div.mat-select-value > span > span'
+    ).innerHTML =
+    paginator.pageSize == 2147483647 ? 'All' : paginator.pageSize
+    "
+    #paginator
+    #paginatorElement
+    [length]="dataSource.data.length"
+    [pageIndex]="0"
+    [pageSizeOptions]="[5, 10, 20, dataSource.data.length]"
+    [pageSize]="10"
+    >
+    </mat-paginator>
+  </mat-toolbar-row>
+    
+    
+    
+    
+    <div class="flex w-full">
+    <div class="custom-mat-floating-label">
+    <mat-form-field
+    appearance="outline"
+    class="component--mat-form-field__custom-input pl-2"
+    >
+    <mat-label>Filter</mat-label>
+    <input
+    [disabled]="paginator.pageSize == dataSource.data.length? false : true"
+    matInput
+    (keyup)="applyFilter($event)"
+    placeholder="Lithium"
+    #input
+    />
+    </mat-form-field>
+    </div>
+    
+    <div class="flex w-full justify-end">
+    <span class="p-5 cursor-pointer text-sm font-medium" [matMenuTriggerFor]="menu">Export</span>
+    </div>
+    </div>   
+    
+    <div class="app-hint">
+    * Please select all Records to enable table data Filter.
+    </div>
+
+
+</div>
+
+<!-- Mat Menu -->
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="downloadAsPDF()">
+    <mat-icon>picture_as_pdf</mat-icon>
+    <span>Print / Export PDF</span>
+  </button>
+  <button mat-menu-item (click)="exportReport('sample.xlsx')">
+    <mat-icon>grid_on</mat-icon>
+    <span>Export SpreadSheet</span>
+  </button>
+  <button mat-menu-item (click)="exportReport('sample.csv')">
+    <mat-icon>grid_on</mat-icon>
+    <span>Export csv File</span>
+  </button>
+  <button mat-menu-item (click)="exportReport('sample.json')">
+    <mat-icon>grid_on</mat-icon>
+    <span>Export json</span>
+  </button>
+</mat-menu>
+
+<!--  -->
+
+<div class="flex flex-wrap">
+    <div>
+      <div><img class="w-full" src="../../../../../../assets/images/image_of_goods.png" alt=""></div>
+      <div class="red-medium-font-size"><span><img class="mt-2 px-2" src="../../../../../../assets/images/x-mark.png" alt=""></span>Remove</div>
+    </div>
+    <div class="">
+      <div><img class="w-full" src="../../../../../../assets/images/image_of_goods1.png" alt=""></div>
+      <div class="red-medium-font-size"><span><img class="mt-2 px-2" src="../../../../../../assets/images/x-mark.png" alt=""></span>Remove</div>
+    </div>
+    <!-- file upload -->
+    <div class="ml-4">
+    <mat-form-field class="">
+       <!-- Display files names -->
+       <input formControlName="file" matInput [(ngModel)]="fileAttr" readonly name="name" />
+       <!-- Browse Button -->
+       <button mat-flat-button color="primary">Upload New</button>
+       <!-- Fetch selected filed on change -->
+       <input type="file" #fileInput id="uploadFile" (change)="uploadFileEvt($event)" name="uploadFile" multiple="multiple" accept="file/*"/>
+    </mat-form-field>
+    </div>
+</div>
+
+  <!-- select option -->
+  <div class="select mt-2 lt-sm:w-full md:w-full gt-lg:w-1/2">
+    <mat-form-field appearance="outline" class="w-1/2 component--mat-form-field__custom-input">
+    <mat-label>Add from previous uploads</mat-label>
+    <mat-select appearance="outline" placeholder="Add from previous uploads" formControlName="addFromPreviousUpload" required restrictKeywordValidator="Cat">
+      <mat-option>--</mat-option>
+      <mat-option *ngFor="let addfrompreviousupload of addfrompreviousuploads" [value]="addfrompreviousupload.name">
+        {{ addfrompreviousupload.name }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="forthFormGroup.get('addFromPreviousUpload').hasError('required')">Please choose an option</mat-error>
+    <mat-error *ngIf="forthFormGroup.get('addFromPreviousUpload').hasError('invalidValue')">Please choose any other</mat-error>
+    </mat-form-field>
+    </div> 
+
+    <div class="flex justify-end">
+      <div>
+        <button class="primary-button" mat-raised-button matStepperPrevious>
+          Back
+        </button>
+      </div>
+
+      <div class="ml-2">
+        <button  [disabled]="forthFormGroup.invalid" class="primary-button" mat-raised-button matStepperNext>
+          Next
+        </button>
+      </div>
+      
+    </div>
+
+
+
+</form>
+       </mat-step>
+
+
+
+
+
+
+
+
+
+
+        <!-- fifth stepper -->
+       <mat-step [stepControl]="fifthFormGroup" label="Transport Instructions">
+          <form autocomplete="off" [formGroup]="fifthFormGroup" class="space-y-5 pt-2">
+            <div class="my-4">
+
+              <div class="secondary-medium-font-size flex justify-center">Add/Edit Freight Plan</div>
+              <div class="primary-medium-font-size flex justify-center mt-2">Transport Instructions </div>
+
+              <!-- first -->
+              <div class="flex mt-10">
+                <!-- first -->
+                <div class="name lt-sm:w-full gt-lg:w-1/2 md:w-full">
+                  <mat-form-field appearance="outline" class="w-full component--mat-form-field__custom-input">
+                    <input matInput formControlName="firstTextInput" required/>
+                     <mat-error class="error" *ngIf="fifthFormGroup.get('firstTextInput').hasError('required') || fifthFormGroup.get('firstTextInput').touched">Field is required</mat-error>
+                  </mat-form-field>
+                  <span class="lt-sm:invisible md:invisible gt-lg:invisible  ml-6"><button type="submit" mat-raised-button class="primary-button" >Add</button></span>
+                </div>
+    
+                <div class="lt-sm:visible md:visible gt-lg:visible ml-6 mt-2"><button type="submit" mat-raised-button class="primary-button" >Add</button></div>
+    
+              <div>
+            </div>
+    
+              </div>
+
+              <!-- second -->
+              <div>
+              <div class="primary-medium-font-size mt-10">Spl Transport Instructions for:<span class="black-medium-font-size mx-1">Biz Name 2</span></div>
+  
+              <div class="flex justify-start">
+                <ol class="pl-4">
+                  <li class="black-medium-font-size">Unloading Charges of Rs. 120 per MT to be paid by the Transporter.</li>
+                </ol>
+              </div>
+    
+    
+              <div class="flex">
+                <div class="name lt-sm:w-full gt-lg:w-1/2 md:w-full">
+                  <mat-form-field appearance="outline" class="w-full component--mat-form-field__custom-input">
+                    <input matInput formControlName="secondTextInput" required/>
+                     <mat-error class="error" *ngIf="fifthFormGroup.get('secondTextInput').hasError('required') || fifthFormGroup.get('secondTextInput').touched">Field is required</mat-error>
+                  </mat-form-field>
+                  <span class="lt-sm:invisible md:invisible gt-lg:invisible  ml-6"><button type="submit" mat-raised-button class="primary-button" >Add</button></span>
+                </div>
+    
+                <div class="lt-sm:visible md:visible gt-lg:visible ml-6 mt-2"><button type="submit" mat-raised-button class="primary-button" >Add</button></div>
+    
+              <div>
+            </div>
+    
+              </div>
+              </div>
+  
+              <!-- third -->
+              <div>
+                  <div class="primary-medium-font-size mt-10">Spl Transport Instructions for:<span class="black-medium-font-size mx-1">Biz Name 2</span></div>
+      
+                  <div class="flex justify-start">
+                    <ol class="pl-4">
+                      <li class="black-medium-font-size">Unloading Charges of Rs. 120 per MT to be paid by the Transporter.</li>
+                    </ol>
+                  </div>
+        
+        
+                  <div class="flex">
+                    <div class="name lt-sm:w-full gt-lg:w-1/2 md:w-full">
+                      <mat-form-field appearance="outline" class="w-full component--mat-form-field__custom-input">
+                        <input matInput formControlName="thirdTextInput" required/>
+                         <mat-error class="error" *ngIf="fifthFormGroup.get('thirdTextInput').hasError('required') || fifthFormGroup.get('thirdTextInput').touched">Field is required</mat-error>
+                      </mat-form-field>
+                      <span class="lt-sm:invisible md:invisible gt-lg:invisible  ml-6"><button type="submit" mat-raised-button class="primary-button" >Add</button></span>
+                    </div>
+        
+                    <div class="lt-sm:visible md:visible gt-lg:visible ml-6 mt-2"><button type="submit" mat-raised-button class="primary-button" >Add</button></div>
+        
+                  <div>
+                </div>
+        
+                  </div>
+              </div>
+
+            </div>
+
+
+            <div class="flex justify-end">
+               <div>
+                <button class="primary-button" mat-raised-button matStepperPrevious>
+                  Back
+                </button>
+               </div>
+               <div class="ml-2">
+                <button  [disabled]="fifthFormGroup.invalid" class="primary-button" mat-raised-button matStepperNext>Next</button>
+               </div>
+            </div>
+
+
+
+          </form>
+       </mat-step>
+
+
+
+
+
+
+
+
+       
+
+
+       <!-- sixth stepper -->
+       <mat-step [stepControl]="sixthFormGroup" label="Users / Permissions">
+                  <form autocomplete="off" [formGroup]="sixthFormGroup" class="space-y-5 pt-2">
+
+                    <!--last screen first table  -->
+                      <div class="my-8">
+                        <div class="secondary-medium-font-size flex justify-center">Add/Edit Freight Plan</div>
+                        <div class="primary-medium-font-size flex justify-center">Users / Permissions</div>
+                        <div class="mt-4 black-medium-font-size">Users who can track dispatch from: <span class="red-medium-font-size mx-1" >Biz Name 1</span> </div>
+
+       
+            <!-- last screen table1 code  -->
+            <div style="overflow-x:auto;"  id="pdfTable" class="component--mat-table__custom-table mt-10">
+              <table   class="table table-bordered table-sm w-full" id="excel_table" mat-table [dataSource]="dataSource2">
+               
+
+          <!-- Checkbox Column -->
+          <ng-container matColumnDef="select2">
+             <th mat-header-cell *matHeaderCellDef style="width: 0px; max-width: 50px; word-wrap: break-word">
+              <mat-checkbox
+                (change)="$event ? masterToggle2() : null"
+                [checked]="selection2.hasValue() && isAllSelected2()"
+                [indeterminate]="selection2.hasValue() && !isAllSelected2()">
+              </mat-checkbox></th>
+            <td mat-cell *matCellDef="let row2">
+              <mat-checkbox
+                (click)="$event.stopPropagation()"
+                (change)="$event ? selection2.toggle(row2) : null"
+                [checked]="selection2.isSelected(row2)"
+              >
+              </mat-checkbox>
+            </td>
+          </ng-container>
+          
+                <!-- Position Column -->
+                 <ng-container matColumnDef="user_name" style="border-right: 1px solid #9A9A9A;">
+                 <th mat-header-cell *matHeaderCellDef style="width: 47px; max-width: 150px; word-wrap: break-word;margin-left: 0px; padding: 10px;">User Name</th>
+                   <td style="padding:10px; min-width: 150px;" mat-cell *matCellDef="let element">
+                       <div class="">{{ element.user_name }}</div>
+                   </td>      
+                 </ng-container>
+
+               <!-- Name Column -->
+                <ng-container matColumnDef="face_id">
+                    <th mat-header-cell *matHeaderCellDef style="width:80px; max-width: 150px; word-wrap: break-word;padding: 10px;">Face Id</th>
+                    <td style="padding:10px; min-width: 150px;" mat-cell *matCellDef="let element">
+                        <!-- {{ element.face_id }}  -->
+                        <div> <img src="../../../../../../assets/images/profile_icon.png" alt=""> </div>
+                    </td>
+                </ng-container>
+              
+              <!-- Weight Column -->
+                 <ng-container matColumnDef="user_category">
+                      <th mat-header-cell *matHeaderCellDef style="width: 80px; max-width: 150px;word-wrap: break-word; padding: 10px;">User Category</th>
+                      <td style="padding: 10px;  min-width: 150px;" mat-cell *matCellDef="let element">{{ element.user_category }}</td>
+                 </ng-container>
+
+                <!-- Weight Column -->
+                  <ng-container matColumnDef="access_to_dispatch_documents">
+                                <th mat-header-cell *matHeaderCellDef style="width: 80px; max-width: 150px;word-wrap: break-word; padding: 10px;">Access To Dispatch Documents</th>
+                                <td style="padding: 10px;  min-width: 150px;" mat-cell *matCellDef="let element">
+                                  <mat-checkbox></mat-checkbox>
+                                  <!-- {{ element.access_to_dispatch_documents }} -->
+                                </td>
+                  </ng-container>
+              
+                 <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                 <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
+              </table>                  
+            </div>
+
+                 <!-- container -->
+                     </div>
+
+              <!-- paginator filter -->
+<div class="">                    
+  <mat-toolbar-row class=" component--mat-paginator__remove-space">
+    <mat-paginator
+    fxLayoutAlign="start start"
+    (page)="
+    paginatorHtmlElement.nativeElement.querySelector(
+    'div.mat-select-value > span > span'
+    ).innerHTML =
+    paginator.pageSize == 2147483647 ? 'All' : paginator.pageSize
+    "
+    #paginator
+    #paginatorElement
+    [length]="dataSource.data.length"
+    [pageIndex]="0"
+    [pageSizeOptions]="[5, 10, 20, dataSource.data.length]"
+    [pageSize]="10"
+    >
+    </mat-paginator>
+  </mat-toolbar-row>
+    
+    
+    
+    
+    <div class="flex w-full">
+    <div class="custom-mat-floating-label">
+    <mat-form-field
+    appearance="outline"
+    class="component--mat-form-field__custom-input pl-2"
+    >
+    <mat-label>Filter</mat-label>
+    <input
+    [disabled]="paginator.pageSize == dataSource.data.length? false : true"
+    matInput
+    (keyup)="applyFilter($event)"
+    placeholder="Lithium"
+    #input
+    />
+    </mat-form-field>
+    </div>
+    
+    <div class="flex w-full justify-end">
+    <span class="p-5 cursor-pointer text-sm font-medium" [matMenuTriggerFor]="menu">Export</span>
+    </div>
+    </div>   
+    
+    <div class="app-hint">
+    * Please select all Records to enable table data Filter.
+    </div>
+
+
+</div>
+
+<!-- Mat Menu -->
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="downloadAsPDF()">
+    <mat-icon>picture_as_pdf</mat-icon>
+    <span>Print / Export PDF</span>
+  </button>
+  <button mat-menu-item (click)="exportReport('sample.xlsx')">
+    <mat-icon>grid_on</mat-icon>
+    <span>Export SpreadSheet</span>
+  </button>
+  <button mat-menu-item (click)="exportReport('sample.csv')">
+    <mat-icon>grid_on</mat-icon>
+    <span>Export csv File</span>
+  </button>
+  <button mat-menu-item (click)="exportReport('sample.json')">
+    <mat-icon>grid_on</mat-icon>
+    <span>Export json</span>
+  </button>
+</mat-menu>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+           <!--last screen second table  -->
+<div class="mt-36">
+  <div class="mt-10 black-medium-font-size">Users who can track delivery of: <span class="red-medium-font-size mx-1" >Biz Name 2</span> </div>
+  <div class="my-4">
+   
+   <!-- last screen table2 code  -->
+   <div style="overflow-x:auto;"  id="pdfTable" class="component--mat-table__custom-table mt-10">
+     <table   class="table table-bordered table-sm w-full" id="excel_table" mat-table [dataSource]="dataSource3">
+      
+               <!-- Checkbox Column -->
+               <ng-container matColumnDef="select3">
+                <th mat-header-cell *matHeaderCellDef style="width: 0px; max-width: 50px; word-wrap: break-word">
+                 <mat-checkbox
+                   (change)="$event ? masterToggle3() : null"
+                   [checked]="selection3.hasValue() && isAllSelected3()"
+                   [indeterminate]="selection3.hasValue() && !isAllSelected3()">
+                 </mat-checkbox></th>
+               <td mat-cell *matCellDef="let row3">
+                 <mat-checkbox
+                   (click)="$event.stopPropagation()"
+                   (change)="$event ? selection3.toggle(row3) : null"
+                   [checked]="selection3.isSelected(row3)"
+                 >
+                 </mat-checkbox>
+               </td>
+             </ng-container>
+      <!-- Position Column -->
+        <ng-container matColumnDef="user_name" style="border-right: 1px solid #9A9A9A;">
+        <th mat-header-cell *matHeaderCellDef style="width: 47px; max-width: 150px; word-wrap: break-word;margin-left: 0px; padding: 10px;">User Name</th>
+          <td style="padding:10px; min-width: 150px;" mat-cell *matCellDef="let element">
+              <div class="">{{ element.user_name }}</div>
+          </td>      
+        </ng-container>
+
+
+      <!-- Name Column -->
+       <ng-container matColumnDef="face_id">
+           <th mat-header-cell *matHeaderCellDef style="width:80px; max-width: 150px; word-wrap: break-word;padding: 10px;">Face Id</th>
+           <td style="padding:10px; min-width: 150px;" mat-cell *matCellDef="let element">
+               <!-- {{ element.face_id }}  -->
+               <div> <img src="../../../../../../assets/images/profile_icon.png" alt=""> </div>
+           </td>
+       </ng-container>
+     
+     <!-- Weight Column -->
+        <ng-container matColumnDef="user_category">
+             <th mat-header-cell *matHeaderCellDef style="width: 80px; max-width: 150px;word-wrap: break-word; padding: 10px;">User Category</th>
+             <td style="padding: 10px;  min-width: 150px;" mat-cell *matCellDef="let element">{{ element.user_category }}</td>
+        </ng-container>
+
+                     <!-- Weight Column -->
+                     <ng-container matColumnDef="access_to_dispatch_documents">
+                       <th mat-header-cell *matHeaderCellDef style="width: 80px; max-width: 150px;word-wrap: break-word; padding: 10px;">Access To Dispatch Documents</th>
+                       <td style="padding: 10px;  min-width: 150px;" mat-cell *matCellDef="let element">
+                         <mat-checkbox></mat-checkbox>
+                         <!-- {{ element.access_to_dispatch_documents }} -->
+                       </td>
+                  </ng-container>
+     
+        <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns3"></tr>
+     </table>                  
+   </div>
+
+        <!-- container -->
+ </div>
+
+     <!-- paginator filter -->
+<div class="">                    
+<mat-toolbar-row class=" component--mat-paginator__remove-space">
+<mat-paginator
+fxLayoutAlign="start start"
+(page)="
+paginatorHtmlElement.nativeElement.querySelector(
+'div.mat-select-value > span > span'
+).innerHTML =
+paginator.pageSize == 2147483647 ? 'All' : paginator.pageSize
+"
+#paginator
+#paginatorElement
+[length]="dataSource.data.length"
+[pageIndex]="0"
+[pageSizeOptions]="[5, 10, 20, dataSource.data.length]"
+[pageSize]="10"
+>
+</mat-paginator>
+</mat-toolbar-row>
+
+
+
+
+<div class="flex w-full">
+<div class="custom-mat-floating-label">
+<mat-form-field
+appearance="outline"
+class="component--mat-form-field__custom-input pl-2"
+>
+<mat-label>Filter</mat-label>
+<input
+[disabled]="paginator.pageSize == dataSource.data.length? false : true"
+matInput
+(keyup)="applyFilter($event)"
+placeholder="Lithium"
+#input
+/>
+</mat-form-field>
+</div>
+
+<div class="flex w-full justify-end">
+<span class="p-5 cursor-pointer text-sm font-medium" [matMenuTriggerFor]="menu">Export</span>
+</div>
+</div>   
+
+<div class="app-hint">
+* Please select all Records to enable table data Filter.
+</div>
+
+
+</div>
+
+<!-- Mat Menu -->
+<mat-menu #menu="matMenu">
+<button mat-menu-item (click)="downloadAsPDF()">
+<mat-icon>picture_as_pdf</mat-icon>
+<span>Print / Export PDF</span>
+</button>
+<button mat-menu-item (click)="exportReport('sample.xlsx')">
+<mat-icon>grid_on</mat-icon>
+<span>Export SpreadSheet</span>
+</button>
+<button mat-menu-item (click)="exportReport('sample.csv')">
+<mat-icon>grid_on</mat-icon>
+<span>Export csv File</span>
+</button>
+<button mat-menu-item (click)="exportReport('sample.json')">
+<mat-icon>grid_on</mat-icon>
+<span>Export json</span>
+</button>
+</mat-menu>
+
+</div>
+
+
+
+
+
+           <!--last screen thrid table  -->
+           <div class="mt-36">
+            <div class="mt-10 black-medium-font-size">Users who can track delivery of: <span class="red-medium-font-size mx-1" >Biz Name 2</span> </div>
+            <div class="my-4">
+
+
+             
+             <!-- last screen table1 code  -->
+             <div style="overflow-x:auto;"  id="pdfTable" class="component--mat-table__custom-table mt-10">
+               <table   class="table table-bordered table-sm w-full" id="excel_table" mat-table [dataSource]="dataSource4">
+               
+               
+                              <!-- Checkbox Column -->
+              <ng-container matColumnDef="select4">
+                <th mat-header-cell *matHeaderCellDef style="width: 0px; max-width: 50px; word-wrap: break-word">
+                  <mat-checkbox
+                                   (change)="$event ? masterToggle4() : null"
+                                   [checked]="selection4.hasValue() && isAllSelected4()"
+                                   [indeterminate]="selection4.hasValue() && !isAllSelected4()">
+                                 </mat-checkbox></th>
+                          <td mat-cell *matCellDef="let row4">
+                  <mat-checkbox
+                                   (click)="$event.stopPropagation()"
+                                   (change)="$event ? selection4.toggle(row4) : null"
+                                   [checked]="selection4.isSelected(row4)"
+                                 >
+                  </mat-checkbox>
+                </td>
+               </ng-container>
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+                             <!-- Position Column -->
+                  <ng-container matColumnDef="user_name" style="border-right: 1px solid #9A9A9A;">
+                  <th mat-header-cell *matHeaderCellDef style="width: 47px; max-width: 150px; word-wrap: break-word;margin-left: 0px; padding: 10px;">User Name</th>
+                    <td style="padding:10px; min-width: 150px;" mat-cell *matCellDef="let element">
+                        <div class="">{{ element.user_name }}</div>
+                    </td>      
+                  </ng-container>
+          
+          
+                
+                
+                
+                  <!-- Name Column -->
+                 <ng-container matColumnDef="face_id">
+                     <th mat-header-cell *matHeaderCellDef style="width:80px; max-width: 150px; word-wrap: break-word;padding: 10px;">Face Id</th>
+                     <td style="padding:10px; min-width: 150px;" mat-cell *matCellDef="let element">
+                         <!-- {{ element.face_id }}  -->
+                         <div> <img src="../../../../../../assets/images/profile_icon.png" alt=""> </div>
+                     </td>
+                 </ng-container>
+               
+               <!-- Weight Column -->
+                  <ng-container matColumnDef="user_category">
+                       <th mat-header-cell *matHeaderCellDef style="width: 80px; max-width: 150px;word-wrap: break-word; padding: 10px;">User Category</th>
+                       <td style="padding: 10px;  min-width: 150px;" mat-cell *matCellDef="let element">{{ element.user_category }}</td>
+                  </ng-container>
+          
+                               <!-- Weight Column -->
+                               <ng-container matColumnDef="access_to_dispatch_documents">
+                                 <th mat-header-cell *matHeaderCellDef style="width: 80px; max-width: 150px;word-wrap: break-word; padding: 10px;">Access To Dispatch Documents</th>
+                                 <td style="padding: 10px;  min-width: 150px;" mat-cell *matCellDef="let element">
+                                   <mat-checkbox></mat-checkbox>
+                                   <!-- {{ element.access_to_dispatch_documents }} -->
+                                 </td>
+                            </ng-container>
+               
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns4"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns4"></tr>
+               </table>                  
+             </div>
+          
+                  <!-- container -->
+           </div>
+          
+               <!-- paginator filter -->
+          <div class="">                    
+          <mat-toolbar-row class=" component--mat-paginator__remove-space">
+          <mat-paginator
+          fxLayoutAlign="start start"
+          (page)="
+          paginatorHtmlElement.nativeElement.querySelector(
+          'div.mat-select-value > span > span'
+          ).innerHTML =
+          paginator.pageSize == 2147483647 ? 'All' : paginator.pageSize
+          "
+          #paginator
+          #paginatorElement
+          [length]="dataSource.data.length"
+          [pageIndex]="0"
+          [pageSizeOptions]="[5, 10, 20, dataSource.data.length]"
+          [pageSize]="10"
+          >
+          </mat-paginator>
+          </mat-toolbar-row>
+          
+          
+          <div class="flex w-full">
+          <div class="custom-mat-floating-label">
+          <mat-form-field
+          appearance="outline"
+          class="component--mat-form-field__custom-input pl-2"
+          >
+          <mat-label>Filter</mat-label>
+          <input
+          [disabled]="paginator.pageSize == dataSource.data.length? false : true"
+          matInput
+          (keyup)="applyFilter($event)"
+          placeholder="Lithium"
+          #input
+          />
+          </mat-form-field>
+          </div>
+          
+          <div class="flex w-full justify-end">
+          <span class="p-5 cursor-pointer text-sm font-medium" [matMenuTriggerFor]="menu">Export</span>
+          </div>
+          </div>   
+          
+          <div class="app-hint">
+          * Please select all Records to enable table data Filter.
+          </div>
+          
+          
+          </div>  
+          <!-- Mat Menu -->
+          <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="downloadAsPDF()">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Print / Export PDF</span>
+          </button>
+          <button mat-menu-item (click)="exportReport('sample.xlsx')">
+          <mat-icon>grid_on</mat-icon>
+          <span>Export SpreadSheet</span>
+          </button>
+          <button mat-menu-item (click)="exportReport('sample.csv')">
+          <mat-icon>grid_on</mat-icon>
+          <span>Export csv File</span>
+          </button>
+          <button mat-menu-item (click)="exportReport('sample.json')">
+          <mat-icon>grid_on</mat-icon>
+          <span>Export json</span>
+          </button>
+          </mat-menu>
+          
+          </div>
+
+
+
+       
+
+          <div style="margin-top: 20px">
+            <button class="primary-button" mat-raised-button matStepperPrevious>
+              Back
+            </button>
+            <button
+              class="primary-button"
+              style="margin-left: 10px"
+              mat-raised-button
+              (click)="stepper.reset()"
+            >
+              Reset
+            </button>
+            <button
+            [disabled]="sixthFormGroup.invalid"
+              class="primary-button"
+              style="margin-left: 10px"
+              mat-raised-button
+             (click)="submit()"
+              [disabled]="this.firstFormGroup.invalid && this.secondFormGroup.invalid"
+            >
+              Submit
+            </button>
+          </div>
+
+          
+       
+
+
+
+
+                    
+                  </form>
+       </mat-step>
+
+        <!-- Don stepper -->
+       <!-- <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <p>You are now done.</p>
+        <div style="margin-top: 20px">
+          <button class="primary-button" mat-raised-button matStepperPrevious>
+            Back
+          </button>
+          <button
+            class="primary-button"
+            style="margin-left: 10px"
+            mat-raised-button
+            (click)="stepper.reset()"
+          >
+            Reset
+          </button>
+          <button
+            class="primary-button"
+            style="margin-left: 10px"
+            mat-raised-button
+          (click)="submit()"
+            [disabled]="this.firstFormGroup.invalid && this.secondFormGroup.invalid"
+          >
+            Submit
+          </button>
+        </div>
+      </mat-step> -->
+
+
+    </mat-stepper>
+  </div> 
+</div>
+
+<div>
+
+
+
+
+
+
+
+
+
+<label> Form Value : </label>
+  {{ firstformValues |json }}
+  {{ secondformValues |json }}
+</div>
+<div>
+
+<label> Submit Status : </label>
+  {{ submitBtnStatus }}
+</div>
