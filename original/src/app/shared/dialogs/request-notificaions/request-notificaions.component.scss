@@ -1,0 +1,23 @@
+.custom-dialog-container .mat-dialog-container {
+    padding: 15px !important;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    top:20px;
+}
+
+
+
+
+::ng-deep .mat-dialog-container{
+    padding: 0px 0px 0px 0px !important;
+  }
+  
+
+
+
+  ::ng-deep .mat-toolbar-row, .mat-toolbar-single-row {
+     height: 27px  !important; 
+}
+
+
+
