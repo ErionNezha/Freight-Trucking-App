@@ -1,0 +1,578 @@
+<!-- <div class="m-4">
+    <div class="flex justify-center secondary-medium-font-size mt-4">Edit Business Location / Details</div>
+    <div class="flex justify-center primary-medium-font-size mt-4">Indicative Freight Charges, Preferred Truck Type, Transport Instructions</div>
+</div> -->
+
+
+
+
+
+<div>
+    <div class="mat-stepper-container">
+        <div class="py-2">
+          <mat-stepper [linear]="isLinear" #stepper [orientation]="orientation" class="component--mat-stepper__custom-style">
+            
+            <!-- first stepper -->
+            <div>
+                <mat-step [stepControl]="firstFormGroup" label="Edit Business Location / Details">
+                    <form autocomplete="off" [formGroup]="firstFormGroup" class="space-y-5 pt-2">
+                      <div>
+                        <div >
+                          <div class="secondary-medium-font-size flex justify-center">Edit Business Location / Details</div>
+                          <div class="primary-medium-font-size flex justify-center mt-4">Indicative Freight Charges, Preferred Truck Type, Transport Instructions</div>
+                        </div> 
+  
+                        <!-- Indicative Freight Cost: -->
+                        <div class="">
+                           <div class="primary-medium-font-size md:mt-6 gt-lg:mt-6">Indicative Freight Cost:</div>
+                          
+                             <div>
+                              <mat-form-field
+                              appearance="outline"
+                              class="mt-5 lt-sm:w-80 md:w-full gt-lg:w-1/2 component--mat-form-field__custom-input"
+                            >
+                              <mat-label>Per Unit</mat-label>
+                              <mat-select
+                                appearance="outline"
+                                placeholder="Per Unit"
+                                formControlName="unit"
+                                required
+                              >
+                                <mat-option>--</mat-option>
+                                <mat-option *ngFor="let unit of unit" [value]="unit.name">
+                                  {{ unit.name }}
+                                </mat-option>
+                              </mat-select>
+                              <mat-error
+                                *ngIf="firstFormGroup.get('unit').hasError('required')"
+                                >choose an option</mat-error
+                              >
+                              <mat-error
+                                *ngIf="
+                                  firstFormGroup.get('unit').hasError('invalidValue')
+                                "
+                                >choose any other option</mat-error
+                              >
+                             </mat-form-field>
+                             </div>
+                          
+                        </div>
+                        <!-- Indicative Freight Cost End -->
+  
+                        <!-- dynamic form -->  
+                       <form [formGroup]="indicativeFreightCostFormGroup">
+                         <div formArrayName="indicativeFreightCost" class="my-6">
+      <div *ngFor="let indicativeFreightCostData of IndicativeFreightCost().controls; let Index=index">
+        <div [formGroupName]="Index" class="my-10">
+  
+             <mat-form-field
+            appearance="outline"
+            class="w-24 md:w-64 gt-lg:w-52 component--mat-form-field__custom-input"
+            >
+            <input
+             matInput
+             placeholder="1250.00"
+             formControlName="cost"
+            />
+            <!-- <mat-error
+             class="error"
+             *ngIf="
+             firstFormGroup.get('cost').hasError('required') ||
+             firstFormGroup.get('cost').touched"
+             >
+             cost is required
+           </mat-error> -->
+             </mat-form-field>
+  
+             <span class="black-medium-font-size mx-2 md:mx-5 gt-lg:mx-4">Rs. Per</span>
+  
+             <mat-form-field
+              appearance="outline"
+              class="w-24 md:w-64 gt-lg:w-60 component--mat-form-field__custom-input"
+            >
+              <mat-label>MT</mat-label>
+               <mat-select
+                appearance="outline"
+                placeholder="MT"
+                formControlName="MT"
+                required
+              >
+                <mat-option>--</mat-option>
+                <mat-option *ngFor="let MT of MT" [value]="MT.name">
+                  {{ MT.name }}
+                </mat-option>
+               </mat-select>
+  
+               <mat-error
+                *ngIf="indicativeFreightCostFormGroup.get('MT').hasError('required')"
+                >choose an option</mat-error
+              >
+               <mat-error
+                *ngIf="
+                indicativeFreightCostFormGroup.get('MT').hasError('invalidValue')
+                "
+                >choose any other option</mat-error
+              > 
+             </mat-form-field>
+    
+             <span class="ml-2 md:ml-4 gt-lg:ml-4 mt-3"><img (click)="addIndicativeFreightCost()" src="../../../../../../assets/images/plus.png" alt=""></span>
+             <span class="ml-2 md:ml-4 gt-lg:ml-4 mt-3"><img (click)="removeIndicativeFreightCost(Index)"  src="../../../../../../assets/images/minus.png" alt=""></span>
+  
+        </div>
+      </div>
+                         </div>
+                       </form>
+  
+                       <!-- {{this.indicativeFreightCostFormGroup.value | json}} -->
+                       <!-- dynamic form end-->
+
+          <!-- start -->
+          <div class="flex flex-wrap">
+                <div>
+                  <!-- Preferred Truck Type: -->
+                  <div>
+                      <div class="secondary-medium-font-size lt-sm:mt-2 mt-3 ">Preferred Truck Type:</div>
+                      <div>             
+                        <mat-form-field
+                                                       appearance="outline"
+                                                       class="mt-5 lt-sm:w-80 md:w-full gt-lg:w-full component--mat-form-field__custom-input"
+                                                     >
+                                                       <mat-label>Type</mat-label>
+                                                       <mat-select
+                                                         appearance="outline"
+                                                         placeholder="Type"
+                                                         formControlName="custom"
+                                                         required
+                                                       >
+                                                         <mat-option>--</mat-option>
+                                                         <mat-option *ngFor="let type of Type" [value]="type.name">
+                                                           {{ type.name }}
+                                                         </mat-option>
+                                                       </mat-select>
+                                                       <mat-error
+                                                         *ngIf="firstFormGroup.get('custom').hasError('required')"
+                                                         >choose an option</mat-error
+                                                       >
+                                                       <mat-error
+                                                         *ngIf="
+                                                           firstFormGroup.get('custom').hasError('invalidValue')
+                                                         "
+                                                         >choose any other option</mat-error
+                                                       >
+                        </mat-form-field>
+                      </div>
+                   </div>
+                                
+                  
+                  <div class="mt-2">
+                    <!-- number of wheels -->
+                    <mat-form-field
+                                                appearance="outline"
+                                                class="lt-sm:w-full lt-sm:mt-8 md:mt-4 gt-lg:mt-4 md:w-80 gt-lg:w-72  component--mat-form-field__custom-input"
+                                              >
+                                                <mat-label>No of Wheels:</mat-label>
+                                                <mat-select
+                                                  appearance="outline"
+                                                  placeholder="No of Wheels"
+                                                  formControlName="noOfWheels"
+                                                  required
+                                                >
+                                                  <mat-option>--</mat-option>
+                                                  <mat-option *ngFor="let noOfWheel of noOfWheels" [value]="noOfWheel.name">
+                                                    {{ noOfWheel.name }}
+                                                  </mat-option>
+                                                </mat-select>
+                                                <mat-error
+                                                  *ngIf="firstFormGroup.get('noOfWheels').hasError('required')"
+                                                  >choose an option</mat-error
+                                                >
+                                                <mat-error
+                                                  *ngIf="
+                                                    firstFormGroup.get('noOfWheels').hasError('invalidValue')
+                                                  "
+                                                  >choose any other option</mat-error
+                                                >
+                    </mat-form-field>
+
+                    <!-- Truck Body Type: -->                    
+                    <mat-form-field
+                                                appearance="outline"
+                                                class="lt-sm:w-full lt-sm:mt-8 md:ml-9  gt-lg:ml-9 md:w-80 gt-lg:w-72 component--mat-form-field__custom-input"
+                                             >
+                                               <mat-label>Truck Body Type:</mat-label>
+                                               <mat-select
+                                                 appearance="outline"
+                                                 placeholder="Truck Body Type"
+                                                 formControlName="truckBodyType"
+                                                 required
+                                               >
+                                                 <mat-option>--</mat-option>
+                                                 <mat-option *ngFor="let truckBodyType of truckBodyType" [value]="truckBodyType.name">
+                                                   {{ truckBodyType.name }}
+                                                 </mat-option>
+                                               </mat-select>
+                                               <mat-error
+                                                 *ngIf="firstFormGroup.get('truckBodyType').hasError('required')"
+                                                 >choose an option</mat-error
+                                               >
+                                               <mat-error
+                                                 *ngIf="
+                                                   firstFormGroup.get('truckBodyType').hasError('invalidValue')
+                                                 "
+                                                 >choose any other option</mat-error
+                                               >
+                    </mat-form-field>                            
+                  </div>
+                </div>  
+
+                <div class="gt-lg:ml-20">
+                  <div class="secondary-medium-font-size lt-sm:mt-12 md:mt-12 ">Illustration Image:</div>
+                  <div class=" lt-sm:mt-6 md:mt-6"><img src="../../../../../../assets/images/body_truck.png" alt=""></div>
+                </div>         
+            <!-- end -->
+          </div>
+
+
+          <!-- Default Fright  Payment Terms: -->
+          <div class="name">
+            <mat-form-field
+              appearance="outline"
+              class="lt-sm:mt-8 md:mt-8 gt-lg:mt-8 lt-sm:w-full md:w-full gt-lg:w-1/2 component--mat-form-field__custom-input"
+            >
+              <mat-label>Default Fright Payment Terms:</mat-label>
+              <input
+                matInput
+                placeholder="Default Fright Payment Terms"
+                formControlName="defaultFrightPaymentTerms"
+                required
+              />
+              <mat-error
+                class="error"
+                *ngIf="
+                  firstFormGroup.get('defaultFrightPaymentTerms').hasError('required') ||
+                  firstFormGroup.get('defaultFrightPaymentTerms').touched
+                "
+              >
+              Default Fright Payment Terms is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+
+          <!-- Default Transport Instructions of: -->
+          <div class="primary-medium-font-size mt-5">Default Transport Instructions of: <span class="black-medium-font-size ml-2">Biz Name 2</span></div>
+          <div class="flex">
+            <div class="black-medium-font-size gt-lg:w-3/4 mt-5">1.Unloading Charges of Rs. 120 per MT to be paid by the Transporter.
+              <span class="lt-sm:ml-40 md:pl-56 gt-lg:pl-40"> <img src="../../../../../../assets/images/x-mark.png" alt=""> </span>
+           </div>
+          </div>
+
+
+          <!-- input -->
+          
+          <div class="mt-6">
+            <div>
+              <mat-form-field
+              appearance="outline"
+              class="lt-sm:w-full md:w-full gt-lg:w-1/2 component--mat-form-field__custom-input"
+            >
+              <!-- <mat-label>Enter Name</mat-label> -->
+              <input
+                matInput
+                formControlName="inputCtrl"
+                required
+              />
+              <!-- <mat-error
+                class="error"
+                *ngIf="
+                  firstFormGroup.get('inputCtrl').hasError('required') ||
+                  firstFormGroup.get('inputCtrl').touched
+                "
+              >
+                Name is required
+              </mat-error> -->
+              </mat-form-field>
+            </div>
+
+            <div class="ml-60 mt-4">
+              <button
+              type="submit"
+              mat-raised-button
+              class="primary-button"
+            >
+              Add
+            </button>
+            </div>
+
+          </div>
+
+
+          <div class="mt-10 flex justify-center">
+            <button [disabled]="firstFormGroup.invalid && indicativeFreightCostFormGroup.invalid" class="primary-button" mat-raised-button matStepperNext>
+              Next
+            </button>
+          </div>
+
+
+
+          <!-- container end -->
+     </div>
+
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    </form>
+                </mat-step>
+            </div>
+
+
+
+              <!-- second stepper -->
+             <div>
+                <mat-step [stepControl]="secondFormGroup" label="Business Location / Details">
+                <form autocomplete="off" [formGroup]="secondFormGroup" class="space-y-5 pt-2">
+
+                <div class="secondary-medium-font-size mt-4 flex justify-center">
+                     Business Location / Details
+                </div>
+
+                <div class="mt-8 black-medium-font-size">
+                     Link default users who can track deliveries of: <span class="red-medium-font-size ml-2">Biz Name 1</span> <span class="black-medium-font-size ml-2">from</span><span class="red-medium-font-size ml-2">Your Biz Name</span>
+                </div>
+                
+                <div>
+              <button class="primary-button" mat-raised-button matStepperPrevious>Add</button>
+              <button class="primary-button" mat-raised-button matStepperNext style="margin-left: 10px;">Delete</button>
+                </div>
+                <!-- table -->
+                <!-- component--mat-table__custom-table this class only make table design -->
+               <div>
+            <div style="overflow-x:auto;" id="pdfTable" class="component--mat-table__custom-table mt-10 gt-lg:w-full lt-xl:w-full">
+              <table class="table table-bordered table-sm w-full" id="excel_table" mat-table [dataSource]="dataSource">
+              <!-- User Name Column -->
+              <ng-container matColumnDef="user_name" style="border-right: 1px solid #9A9A9A">
+              <th mat-header-cell *matHeaderCellDef style="width: 20px; max-width: 150px; word-wrap: break-word;margin-left: 10px;">User Name</th>
+                  <td style="min-width:150px" mat-cell *matCellDef="let element">
+                      <div class="flex flex-row flex-wrap ">
+                          <div class="">{{ element.user_name }}</div>
+                      </div>
+                  </td>      
+              </ng-container>
+                
+  
+                       <!-- Weight Column -->
+              <ng-container matColumnDef="face_id">
+                  <th mat-header-cell *matHeaderCellDef style="width: 20px; max-width: 150px; word-wrap: break-word">Face ID</th>
+                  <td style="min-width:150px" mat-cell *matCellDef="let element">
+                    <!-- {{ element.face_id }} -->
+                    <div> <img src="../../../../../../assets/images/profile_icon.png" alt=""> </div>
+                  </td>
+              </ng-container>
+                
+               <!-- Symbol Column -->
+              <ng-container matColumnDef="reg_mobile_no">
+                  <th mat-header-cell *matHeaderCellDef style="width: 20px; max-width: 150px; word-wrap: break-word">Reg Mobile No</th>
+                  <td style="min-width:150px" mat-cell *matCellDef="let element">{{ element.reg_mobile_no }} </td>                         
+              </ng-container>
+
+                <!-- Symbol Column -->
+               <ng-container matColumnDef="user_category">
+                  <th mat-header-cell *matHeaderCellDef style="width: 20px; max-width: 150px; word-wrap: break-word">User Category</th>
+                  <td  style="min-width:150px" mat-cell *matCellDef="let element">{{ element.user_category }} </td>                         
+              </ng-container>
+
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="access_to_dispatch_documents">
+              <th mat-header-cell *matHeaderCellDef style="width: 20px; max-width: 150px; word-wrap: break-word">Access to Dispatch Documents</th>
+              <td style="min-width:150px" mat-cell *matCellDef="let element">
+                <mat-checkbox></mat-checkbox>
+                <!-- {{ element.access_to_dispatch_documents }}  -->
+              </td>                         
+              <td mat-cell></td>
+            </ng-container>
+
+        <!-- Symbol Column -->
+          <ng-container matColumnDef="provide_support_to_driver_transporter">
+            <th mat-header-cell *matHeaderCellDef style="width: 20px; max-width: 150px; word-wrap: break-word">Provide Support to Driver/Transporter</th>
+            <td style="min-width:150px" mat-cell *matCellDef="let element">
+              <mat-checkbox></mat-checkbox>
+              <!-- {{ element.provide_support_to_driver_transporter }}  -->
+            </td>                         
+            <td mat-cell></td>
+          </ng-container>
+
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="provide_digital_proof_of_delivery">
+          <th mat-header-cell *matHeaderCellDef style="width: 20px; max-width: 150px; word-wrap: break-word">Provide Digital Proof of Delivery</th>
+          <td style="min-width:150px" mat-cell *matCellDef="let element">
+            <mat-checkbox></mat-checkbox>
+            <!-- {{ element.provide_digital_proof_of_delivery }}  -->
+          </td>                         
+          <td mat-cell></td>
+        </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      
+        </table>            
+    </div> 
+             </div>
+
+         
+  <!-- paginator filter -->
+<div class="">                    
+  <mat-toolbar-row class=" component--mat-paginator__remove-space">
+    <mat-paginator
+    fxLayoutAlign="start start"
+    (page)="
+    paginatorHtmlElement.nativeElement.querySelector(
+    'div.mat-select-value > span > span'
+    ).innerHTML =
+    paginator.pageSize == 2147483647 ? 'All' : paginator.pageSize
+    "
+    #paginator
+    #paginatorElement
+    [length]="dataSource.data.length"
+    [pageIndex]="0"
+    [pageSizeOptions]="[5, 10, 20, dataSource.data.length]"
+    [pageSize]="10"
+    >
+    </mat-paginator>
+  </mat-toolbar-row>
+    
+    
+    
+    
+    <div class="flex w-full">
+    <div class="custom-mat-floating-label">
+    <mat-form-field
+    appearance="outline"
+    class="component--mat-form-field__custom-input pl-2"
+    >
+    <mat-label>Filter</mat-label>
+    <input
+    [disabled]="paginator.pageSize == dataSource.data.length? false : true"
+    matInput
+    (keyup)="applyFilter($event)"
+    placeholder="Lithium"
+    #input
+    />
+    </mat-form-field>
+    </div>
+    
+    <div class="flex w-full justify-end">
+    <span class="p-5 cursor-pointer text-sm font-medium" [matMenuTriggerFor]="menu">Export</span>
+    </div>
+    </div>   
+    
+    <div class="app-hint">
+    * Please select all Records to enable table data Filter.
+    </div>
+
+
+</div>
+
+<!-- Mat Menu -->
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="downloadAsPDF()">
+    <mat-icon>picture_as_pdf</mat-icon>
+    <span>Print / Export PDF</span>
+  </button>
+  <button mat-menu-item (click)="exportReport('sample.xlsx')">
+    <mat-icon>grid_on</mat-icon>
+    <span>Export SpreadSheet</span>
+  </button>
+  <button mat-menu-item (click)="exportReport('sample.csv')">
+    <mat-icon>grid_on</mat-icon>
+    <span>Export csv File</span>
+  </button>
+  <button mat-menu-item (click)="exportReport('sample.json')">
+    <mat-icon>grid_on</mat-icon>
+    <span>Export json</span>
+  </button>
+</mat-menu>
+    
+</form>
+
+<div class="flex justify-end" style="margin-top: 20px;">
+  <button class="primary-button" mat-raised-button matStepperPrevious>
+    Back
+  </button>
+  <button
+    class="primary-button"
+    style="margin-left: 10px"
+    mat-raised-button
+    (click)="stepper.reset()"
+  >
+    Reset
+  </button>
+  <button
+    class="primary-button"
+    style="margin-left: 10px"
+    mat-raised-button
+  (click)="submit()"
+    [disabled]="this.firstFormGroup.invalid && this.secondFormGroup.invalid"
+  >
+    Submit
+  </button>
+</div>
+
+</mat-step>  
+             </div> 
+             
+             
+</mat-stepper>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+      
+      <div>
+        <label> Form Value : </label>
+        {{ firstformValues |json }}
+        {{ secondformValues |json }}
+      </div>
+      <div>
+        <label> Submit Status : </label>
+        {{ submitBtnStatus }}
+      </div>
+      
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
