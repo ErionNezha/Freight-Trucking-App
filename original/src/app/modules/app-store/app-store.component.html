@@ -1,0 +1,30 @@
+<div class="h-screen p-2">
+  <section
+    class="py-1 grid place-content-start justify-items-start gt-md:gap-1"
+    id="slide-item"
+  >
+    <ng-container *ngFor="let item of apps; let index = index">
+      <div class="col-span-4 text-left title-area">
+        {{ item.user_app_category_name }}
+      </div>
+
+      <div class="h-[97px]" *ngFor="let subItem of item.data">
+        <div (click)="openloginDialog()"
+          class="h-full flex flex-col items-center justify-evenly cursor-pointer"
+          style="text-overflow: ellipsis; width: 90px">
+
+          <div class="w-12 h-12 p-1 bg-white rounded-md flex-shrink-0 shadow-md">
+            <img src="assets/icons/app.png" alt="" class="h-full w-full" />
+          </div>
+
+          <div
+            class="text-[10px] font-[550] p-1 text-center"
+            style="line-height: 15px; max-height: 35px"
+          >
+            {{ subItem.user_app_icon_name |ellipsis:30 }}
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </section>
+</div>
