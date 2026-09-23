@@ -1,0 +1,93 @@
+<!-- Created by Erion Nezha — © 2026 All rights reserved -->
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freight Trucking App — Erion Nezha</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0e14;color:#e6e6e6;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column}
+header.top{background:linear-gradient(135deg,#0d1b2a,#1b263b);padding:28px 20px;text-align:center;border-bottom:2px solid #00d4ff33}
+header.top h1{font-size:1.7rem;color:#fff;margin-bottom:8px}
+header.top p{color:#9fb3c8;max-width:760px;margin:0 auto 12px;line-height:1.55;font-size:.95rem}
+.badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.badge{background:#00d4ff22;border:1px solid #00d4ff66;color:#7fdbff;padding:4px 12px;border-radius:20px;font-size:.78rem}
+.tabs{display:flex;gap:10px;justify-content:center;padding:16px;background:#0d1420;border-bottom:1px solid #ffffff14}
+.tabs button{background:#1b263b;color:#cfd8e3;border:1px solid #ffffff22;padding:10px 22px;border-radius:8px;cursor:pointer;font-size:.92rem;transition:.2s}
+.tabs button.active,.tabs button:hover{background:#00d4ff;color:#04121a;border-color:#00d4ff;font-weight:600}
+main{flex:1;padding:20px;max-width:1200px;width:100%;margin:0 auto}
+.panel{display:none}
+.panel.active{display:block}
+iframe.demo{width:100%;height:78vh;border:1px solid #ffffff22;border-radius:10px;background:#fff}
+.codewrap{display:flex;gap:0;border:1px solid #ffffff22;border-radius:10px;overflow:hidden;height:78vh;background:#0d1117}
+.tree{width:280px;min-width:200px;background:#0d1420;border-right:1px solid #ffffff14;overflow-y:auto;padding:12px;font-size:.82rem}
+.tree .tfile{padding:5px 8px;border-radius:5px;cursor:pointer;color:#9fb3c8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tree .tfile:hover{background:#ffffff10;color:#fff}
+.tree .tfile.active{background:#00d4ff26;color:#7fdbff}
+.tree .tdir{color:#5c6b7f;font-weight:600;margin-top:8px;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px}
+.codeview{flex:1;overflow:auto;padding:0;position:relative}
+.codeview pre{padding:16px;font-family:'Consolas','Fira Code',monospace;font-size:.82rem;line-height:1.6;color:#d6deeb;white-space:pre}
+.codeview .lineno{color:#4a5568;user-select:none;margin-right:12px;display:inline-block;width:32px;text-align:right}
+.cbar{display:flex;gap:8px;align-items:center;padding:10px 14px;background:#0d1420;border-bottom:1px solid #ffffff14;font-size:.82rem;color:#9fb3c8;overflow-x:auto}
+footer{text-align:center;padding:18px;color:#5c6b7f;font-size:.85rem;border-top:1px solid #ffffff10;margin-top:10px}
+footer strong{color:#9fb3c8}
+.note{background:#00d4ff12;border:1px solid #00d4ff44;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:.86rem;color:#9fb3c8;line-height:1.6}
+.kw{color:#ff7edb}.st{color:#ffd75c}.cm{color:#5c6b7f;font-style:italic}.fn{color:#7fdbff}.nm{color:#f78c6c}
+@media(max-width:860px){.codewrap{flex-direction:column}.tree{width:100%;max-height:150px;border-right:none;border-bottom:1px solid #ffffff14}}
+</style>
+</head>
+<body>
+<header class="top">
+<h1>🚚 Freight Trucking App</h1>
+<p>Aplikacion Angular (frontend) për menaxhimin e transportit të mallrave: gjurmim dërgesash, planifikim ngarkesash, caktim transportuesish, regjistrim automjetesh dhe vendndodhjesh biznesi. Demoja web është simulim statik funksional — panel me statistika, gjurmim dërgese me status, listë dërgesash, planifikim ngarkese, transportues dhe automjete (mock data).</p>
+<div class="badges"><span class="badge">Angular</span><span class="badge">TypeScript</span><span class="badge">Logjistikë</span><span class="badge">Simulim Web</span></div>
+</header>
+<div class="tabs">
+<button class="active" onclick="show('demo',this)">🖥️ Live Demo</button>
+<button onclick="show('code',this)">📝 Kodi Burim</button>
+</div>
+<main>
+<div class="note">💡 Demo-ja live ekzekutohet direkt në browser. Kliko <strong>Kodi Burim</strong> për të parë kodin e plotë — si të demos (<strong>demo/</strong>), ashtu edhe origjinalin e paprekur (<strong>original/</strong>).</div>
+<div id="p-demo" class="panel active"><iframe class="demo" src="demo/index.html" title="Live demo"></iframe></div>
+<div id="p-code" class="panel"><div class="codewrap">
+<aside class="tree" id="tree"></aside>
+<div class="codeview"><div class="cbar" id="cbar"></div><div id="codebox"><pre></pre></div></div>
+</div></div>
+</main>
+<footer>Krijuar nga <strong>Erion Nezha</strong> — © 2026</footer>
+<script>
+const TREE={"dirs": [{"dirs": [], "files": ["index.html"], "name": "demo"}, {"dirs": [{"dirs": [{"dirs": [{"dirs": [{"dirs": [], "files": ["api-prefix.interceptor.ts"], "name": "config"}], "files": [], "name": "core"}, {"dirs": [{"dirs": [], "files": ["footer.component.html", "footer.component.scss", "footer.component.ts"], "name": "footer"}, {"dirs": [], "files": ["header.component.html", "header.component.scss", "header.component.spec.ts", "header.component.ts"], "name": "header"}], "files": ["layout.component.html", "layout.component.scss", "layout.component.spec.ts", "layout.component.ts", "layout.module.ts", "layout.routing.ts"], "name": "layout"}, {"dirs": [{"dirs": [{"dirs": [{"dirs": [{"dirs": [], "files": ["allocate-freight.component.html", "allocate-freight.component.scss", "allocate-freight.component.spec.ts", "allocate-freight.component.ts"], "name": "allocate-freight"}, {"dirs": [], "files": ["invite-edit-transporters.component.html", "invite-edit-transporters.component.scss", "invite-edit-transporters.component.ts"], "name": "invite-edit-transporters"}], "files": ["allocate-freight-to-transporter.component.html", "allocate-freight-to-transporter.component.scss", "allocate-freight-to-transporter.component.ts"], "name": "allocate-freight-to-transporter"}, {"dirs": [], "files": ["audi-trail-table.component.html", "audi-trail-table.component.scss", "audi-trail-table.component.ts"], "name": "audi-trail-table"}, {"dirs": [{"dirs": [], "files": ["add-edit-business-location-details.component.html", "add-edit-business-location-details.component.scss", "add-edit-business-location-details.component.ts"], "name": "add-edit-business-location-details"}, {"dirs": [], "files": ["select-from-registered-businesses.component.html", "select-from-registered-businesses.component.scss", "select-from-registered-businesses.component.ts"], "name": "select-from-registered-businesses"}], "files": ["business-location-details.component.html", "business-location-details.component.scss", "business-location-details.component.ts"], "name": "business-location-details"}, {"dirs": [{"dirs": [], "files": ["add-edit-transport-vehicles-details.component.html", "add-edit-transport-vehicles-details.component.scss", "add-edit-transport-vehicles-details.component.ts"], "name": "add-edit-transport-vehicles-details"}], "files": ["enter-transport-vehicle-details.component.html", "enter-transport-vehicle-details.component.scss", "enter-transport-vehicle-details.component.spec.ts", "enter-transport-vehicle-details.component.ts"], "name": "enter-transport-vehicle-details"}, {"dirs": [{"dirs": [], "files": ["add-edit-manage-trucker-transporter.component.html", "add-edit-manage-trucker-transporter.component.scss", "add-edit-manage-trucker-transporter.component.ts"], "name": "add-edit-manage-trucker-transporter"}, {"dirs": [], "files": ["edit-areas-served.component.html", "edit-areas-served.component.scss", "edit-areas-served.component.ts"], "name": "edit-areas-served"}, {"dirs": [], "files": ["edit-user-permissions.component.html", "edit-user-permissions.component.scss", "edit-user-permissions.component.ts"], "name": "edit-user-permissions"}], "files": ["manage-trucker-transporter.component.html", "manage-trucker-transporter.component.scss", "manage-trucker-transporter.component.ts"], "name": "manage-trucker-transporter"}, {"dirs": [{"dirs": [], "files": ["add-edit-plan-freight-load.component.html", "add-edit-plan-freight-load.component.scss", "add-edit-plan-freight-load.component.ts"], "name": "add-edit-plan-freight-load"}], "files": ["plan-freight-load.component.html", "plan-freight-load.component.scss", "plan-freight-load.component.ts"], "name": "plan-freight-load"}, {"dirs": [{"dirs": [], "files": ["add-edit-tracking-device.component.html", "add-edit-tracking-device.component.scss", "add-edit-tracking-device.component.spec.ts", "add-edit-tracking-device.component.ts"], "name": "add-edit-tracking-device"}], "files": ["track-freight.component.html", "track-freight.component.scss", "track-freight.component.ts"], "name": "track-freight"}], "files": ["freight-trucking-tracking-management-app.component.html", "freight-trucking-tracking-management-app.component.scss", "freight-trucking-tracking-management-app.component.spec.ts", "freight-trucking-tracking-management-app.component.ts", "freight-trucking-tracking-management-app.module.ts", "freight-trucking-tracking-management-app.routing.ts"], "name": "freight-trucking-tracking-management-app"}], "files": ["app-store-routing.module.ts", "app-store.component.html", "app-store.component.scss", "app-store.component.spec.ts", "app-store.component.ts", "app-store.module.ts"], "name": "app-store"}], "files": [], "name": "modules"}, {"dirs": [{"dirs": [], "files": ["audit-trail-dialog.component.html", "audit-trail-dialog.component.scss", "audit-trail-dialog.component.ts"], "name": "audit-trail-dialog"}, {"dirs": [{"dirs": [], "files": ["login.component.html", "login.component.scss", "login.component.spec.ts", "login.component.ts"], "name": "login"}, {"dirs": [], "files": ["request-notificaions.component.html", "request-notificaions.component.scss", "request-notificaions.component.spec.ts", "request-notificaions.component.ts"], "name": "request-notificaions"}], "files": [], "name": "dialogs"}, {"dirs": [{"dirs": [], "files": ["unsaved-changes.guard.ts"], "name": "unsaved-changes"}], "files": [], "name": "guards"}, {"dirs": [{"dirs": [], "files": ["ellipsis.pipe.spec.ts", "ellipsis.pipe.ts"], "name": "ellipsis"}], "files": [], "name": "pipes"}, {"dirs": [{"dirs": [], "files": ["install-pwa.service.ts"], "name": "Install-PWA"}, {"dirs": [], "files": ["api.service.ts"], "name": "api"}, {"dirs": [], "files": ["connectivity.service.ts"], "name": "connectivity"}, {"dirs": [], "files": ["country-state-city.service.ts"], "name": "country-state-city"}, {"dirs": [], "files": ["custom-spinner.service.ts", "spinner.component.ts"], "name": "custom-spinner"}, {"dirs": [], "files": ["header-title.service.ts"], "name": "header-title"}, {"dirs": [], "files": ["navigation.service.spec.ts", "navigation.service.ts"], "name": "navigation"}, {"dirs": [], "files": ["loader.service.ts"], "name": "progress-bar-loader"}, {"dirs": [], "files": ["style-manager.service.ts"], "name": "style-manager"}], "files": [], "name": "services"}], "files": ["material.module.ts", "shared.module.ts"], "name": "shared"}], "files": ["app-routing.module.ts", "app.component.html", "app.component.scss", "app.component.spec.ts", "app.component.ts", "app.module.ts"], "name": "app"}, {"dirs": [{"dirs": [], "files": ["Vector.png", "add.png", "app.png", "back.png", "background.png", "chat.png", "delete.png", "download.png", "ficon.png", "getbiz_logo.png", "getbizapp.png", "icon-128x128.png", "icon-144x144.png", "icon-152x152.png", "icon-192x192.png", "icon-384x384.png", "icon-512x512.png", "icon-72x72.png", "icon-96x96.png", "logo.png", "map.png", "notification.svg", "profile-pic.svg", "profile_icon.png", "qrCode.svg", "qrcode.png", "search.svg", "send.png", "shared.png", "upload.png", "upload_logo.png"], "name": "icons"}, {"dirs": [], "files": ["audit_trail.png", "body_truck.png", "dummy.png", "favicon.png", "getbizapp 5.png", "image_of_goods.png", "image_of_goods1.png", "india_map.png", "map.png", "map1.png", "minus.png", "plus.png", "products.png", "profile_icon.png", "translate.png", "truck1.png", "upload_image.png", "x-mark.png"], "name": "images"}], "files": [".gitkeep", "logo.png", "profile_icon.png"], "name": "assets"}, {"dirs": [], "files": ["environment.prod.ts", "environment.ts"], "name": "environments"}, {"dirs": [{"dirs": [{"dirs": [], "files": ["_variants.scss"], "name": "button"}], "files": ["_index.scss"], "name": "components"}, {"dirs": [], "files": ["_light.scss", "dark.scss"], "name": "themes"}, {"dirs": [], "files": ["_config.scss"], "name": "typography"}], "files": ["_component-global.scss", "_global.scss", "_mixin.scss", "_variables.scss", "tailwind-classes.scss"], "name": "styles"}], "files": ["favicon.ico", "index.html", "main.ts", "manifest.webmanifest", "polyfills.ts", "styles.scss", "test.ts"], "name": "src"}], "files": ["README.md", "angular.json", "package.json", "tsconfig.app.json", "tsconfig.json", "tsconfig.spec.json"], "name": "original"}], "files": []};
+function show(id,btn){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById('p-'+id).classList.add('active');document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function buildTree(){
+  const t=document.getElementById('tree');let html='';
+  const walk=(node,prefix)=>{node.dirs.forEach(d=>{html+='<div class="tdir">📁 '+prefix+d.name+'</div>';walk(d,prefix+d.name+'/');});node.files.forEach(f=>{html+='<div class="tfile" data-p="'+prefix+f+'">📄 '+f+'</div>';});};
+  walk(TREE,'');t.innerHTML=html;
+  t.querySelectorAll('.tfile').forEach(el=>el.onclick=()=>openFile(el.dataset.p,el));
+  const first=t.querySelector('.tfile');if(first)openFile(first.dataset.p,first);
+}
+async function openFile(path,el){
+  document.querySelectorAll('.tfile').forEach(e=>e.classList.remove('active'));el.classList.add('active');
+  document.getElementById('cbar').textContent=path;
+  const box=document.getElementById('codebox');
+  try{const r=await fetch(path);if(!r.ok)throw 0;const txt=await r.text();
+    box.innerHTML='<pre>'+hl(txt,path.split('.').pop())+'</pre>';
+  }catch(e){box.innerHTML='<pre>Nuk u gjet file-i ('+path+').</pre>';}
+}
+function hl(code,lang){
+  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const tok=/(\/\/[^\n]*|\/\*[\s\S]*?\*\/|#[^\n]*|<!--[\s\S]*?-->)|("[^"\n]*"|'[^'\n]*')|\b(import|from|as|def|return|if|elif|else|for|while|in|not|and|or|class|try|except|finally|with|lambda|pass|break|continue|print|var|let|const|function|new|this|null|true|false|=>|echo|SELECT|FROM|WHERE)\b|\b(\d+(\.\d+)?)\b/g;
+  let out='',last=0,m;
+  while((m=tok.exec(code))!==null){
+    out+=esc(code.slice(last,m.index));
+    const cls=m[1]?'cm':m[2]?'st':m[3]?'kw':'nm';
+    out+='<span class="'+cls+'">'+esc(m[0])+'</span>';
+    last=m.index+m[0].length;
+  }
+  out+=esc(code.slice(last));
+  return out.split('\n').map((l,i)=>'<span class="lineno">'+(i+1)+'</span>'+(l||' ')).join('\n');
+}
+buildTree();
+</script>
+</body>
+</html>
