@@ -1,0 +1,237 @@
+@import '../../../../../../styles/_variables';
+
+
+// @import"../../../../../styles/variables";
+@import "variables";
+
+// @media print {
+//   :not(.printMe) {
+//     display: visible !important;
+//   }
+// }
+
+// @media print {
+//   .print {
+//     display: visible;
+//   }
+// }
+
+/* Structure */
+.example-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  // width: 30%;
+  // max-height: 500px;
+  // min-width: 10px;
+  margin: 5px;
+  // overflow: scroll;
+}
+
+table {
+  width: 100%;
+  // margin-top: 17px;
+}
+
+.print {
+  position: relative;
+  top: 10px;
+  cursor: pointer;
+  right: 5px;
+}
+.example-loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.example-rate-limit-reached {
+  max-width: 360px;
+  text-align: center;
+}
+
+/* Column Widths */
+.mat-column-number,
+.mat-column-state {
+  max-width: 64px;
+}
+
+.mat-column-created {
+  max-width: 124px;
+}
+
+//
+
+.mat-column-position {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+.mat-column-name {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+.mat-column-weight {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+.mat-column-symbol {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+
+.mat-column-radio_btn {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+
+.app-hint {
+  background-color: #ffff00;
+  color: #000000;
+  padding: 3px;
+  font-weight: 550;
+  font-size: 12px;
+}
+
+.mat-paginator {
+  background: unset;
+}
+
+.mat-toolbar-row,
+.mat-toolbar-single-row {
+  display: flex;
+  box-sizing: border-box;
+  padding: 0 0px;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.mat-toolbar-row,
+.mat-toolbar-single-row {
+  height: 37px;
+}
+
+
+
+
+
+
+
+// self code for table remove padding
+
+::ng-deep .mat-vertical-content {
+  padding: 0px 0px 0px 0px !important;
+}
+// date time design
+
+mat-form-field{
+  @apply w-full gt-md:w-[95%]
+}
+
+.left{
+  @apply w-full 
+}
+
+.right{
+  @apply w-full 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// file upload design
+
+
+.mat-toolbar-single-row {
+  height: auto !important;
+  background: transparent;
+}
+.mat-toolbar-single-row button {
+  width: 200px;
+}
+.mat-form-field {
+  // width: 100%;
+}
+#uploadFile {
+  top: 0px;
+  left: 0px;
+  width: 100%;    
+  z-index: 9;
+  opacity: 0;
+  height: 100%;
+  cursor: pointer;
+  position: absolute;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 1,2,3 table right margin code 
+
+.mat-column-user_name {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+
+.mat-column-face_id {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+
+.mat-column-user_category {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+
+.mat-column-access_to_dispatch_documents {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+
+
+
+
+
+
