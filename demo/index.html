@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<!-- Created by Erion Nezha — © 2026 All rights reserved -->
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freight Trucking — Menaxhimi i Transportit — Demo Live</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0e14;color:#e6e6e6;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+header{background:linear-gradient(135deg,#0d1b2a,#16283f);padding:22px 16px;text-align:center;border-bottom:2px solid #00d4ff33}
+header h1{font-size:1.45rem;color:#fff}
+header h1 span{color:#00d4ff}
+header p{color:#9fb3c8;font-size:.88rem;margin-top:6px}
+.sim{max-width:1100px;margin:12px auto 0;background:#ffb02018;border:1px solid #ffb02055;color:#ffd88a;border-radius:8px;padding:10px 16px;font-size:.82rem;line-height:1.6;text-align:center}
+nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:14px;background:#0d1420;border-bottom:1px solid #ffffff14;position:sticky;top:0;z-index:5}
+nav button{background:#1b263b;color:#cfd8e3;border:1px solid #ffffff22;padding:9px 18px;border-radius:8px;cursor:pointer;font-size:.88rem}
+nav button.active,nav button:hover{background:#00d4ff;color:#04121a;font-weight:700;border-color:#00d4ff}
+main{max-width:1100px;margin:0 auto;padding:18px 14px 30px}
+.sec{display:none}.sec.active{display:block}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:18px}
+.card{background:#0d1420;border:1px solid #ffffff14;border-radius:10px;padding:16px}
+.card .n{font-size:1.9rem;font-weight:800;color:#00d4ff}
+.card .l{color:#9fb3c8;font-size:.82rem;margin-top:4px}
+.card.warn .n{color:#ffb020}.card.ok .n{color:#4ade80}.card.bad .n{color:#ff6b6b}
+table{width:100%;border-collapse:collapse;font-size:.86rem;background:#0d1420;border:1px solid #ffffff14;border-radius:10px;overflow:hidden}
+th{background:#1b263b;color:#7fdbff;padding:10px 8px;text-align:left;font-size:.76rem;text-transform:uppercase;letter-spacing:.4px}
+td{padding:9px 8px;border-top:1px solid #ffffff0d;color:#d6deeb}
+tr:hover td{background:#ffffff08}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700}
+.b-transit{background:#00d4ff22;color:#7fdbff;border:1px solid #00d4ff66}
+.b-pending{background:#ffb02022;color:#ffd88a;border:1px solid #ffb02066}
+.b-done{background:#4ade8022;color:#9df0b8;border:1px solid #4ade8066}
+.b-late{background:#ff6b6b22;color:#ff9d9d;border:1px solid #ff6b6b66}
+.panel{background:#0d1420;border:1px solid #ffffff14;border-radius:10px;padding:16px;margin-bottom:16px}
+.panel h2{font-size:1.05rem;color:#7fdbff;margin-bottom:12px}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{font-size:.8rem;color:#9fb3c8;display:block;margin-bottom:4px}
+input,select{width:100%;padding:9px 10px;border-radius:6px;border:1px solid #ffffff22;background:#111a26;color:#e6e6e6;font-size:.9rem}
+.btn{background:#00d4ff;color:#04121a;border:none;padding:10px 22px;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem}
+.btn:hover{background:#4fd4ff}
+.msg{margin-top:10px;font-size:.87rem;min-height:1.3em;color:#7dff9e}
+.timeline{margin-top:6px}
+.tstep{display:flex;gap:12px;padding:10px 0;border-left:2px solid #ffffff22;margin-left:8px;padding-left:18px;position:relative}
+.tstep::before{content:"";position:absolute;left:-7px;top:14px;width:12px;height:12px;border-radius:50%;background:#5c6b7f}
+.tstep.done::before{background:#4ade80}
+.tstep.now::before{background:#00d4ff;box-shadow:0 0 10px #00d4ff}
+.tstep .tt{font-weight:700;font-size:.88rem}
+.tstep .td{color:#9fb3c8;font-size:.8rem}
+.searchrow{display:flex;gap:10px;flex-wrap:wrap}
+.searchrow input{flex:1;min-width:220px}
+.tablewrap{overflow-x:auto;border-radius:10px}
+h3.sub{color:#9fb3c8;font-size:.95rem;margin:16px 0 10px}
+footer{text-align:center;padding:18px;color:#5c6b7f;font-size:.85rem;border-top:1px solid #ffffff10;margin-top:10px}
+footer strong{color:#9fb3c8}
+@media(max-width:640px){.formgrid{grid-template-columns:1fr}table{font-size:.76rem}}
+</style>
+</head>
+<body>
+<header>
+<h1>🚚 Freight <span>Trucking</span> — Menaxhimi i Transportit të Mallrave</h1>
+<p>Gjurmim dërgesash në kohë reale • Planifikim ngarkesash • Transportues • Automjete</p>
+</header>
+<div class="sim">⚠️ <b>SIMULIM</b> — kjo demo statike funksionon plotësisht në browser me të dhëna shembull
+(mock data, bazuar në modelet e aplikacionit origjinal Angular). Origjinali kërkon
+<b>Node.js + Angular build</b> (<b>original/src/…</b> → tab-i “Kodi Burim”).</div>
+<nav>
+<button class="active" data-s="dash">📊 Paneli</button>
+<button data-s="track">📍 Gjurmo dërgesën</button>
+<button data-s="list">📦 Dërgesat</button>
+<button data-s="add">➕ Planifiko ngarkesë</button>
+<button data-s="trans">🤝 Transportuesit</button>
+<button data-s="veh">🚛 Automjetet</button>
+</nav>
+<main>
+<!-- DASHBOARD -->
+<div class="sec active" id="s-dash">
+<div class="cards">
+<div class="card"><div class="n" id="cActive">0</div><div class="l">Dërgesa aktive</div></div>
+<div class="card warn"><div class="n" id="cTransit">0</div><div class="l">Në tranzit</div></div>
+<div class="card ok"><div class="n" id="cDone">0</div><div class="l">Të dorëzuara</div></div>
+<div class="card bad"><div class="n" id="cLate">0</div><div class="l">Me vonesë</div></div>
+<div class="card"><div class="n" id="cTrans">0</div><div class="l">Transportues</div></div>
+<div class="card"><div class="n" id="cVeh">0</div><div class="l">Automjete</div></div>
+</div>
+<h3 class="sub">Dërgesat e fundit</h3>
+<div class="tablewrap"><table><thead><tr><th>ID</th><th>Ruta</th><th>Data e kërkuar</th><th>Pajisja gjurmuese</th><th>Statusi</th></tr></thead><tbody id="recentRows"></tbody></table></div>
+</div>
+
+<!-- TRACK -->
+<div class="sec" id="s-track">
+<div class="panel">
+<h2>📍 Gjurmo dërgesën</h2>
+<div class="searchrow">
+<input id="trackId" placeholder="Shkruaj ID-në e dërgesës, p.sh. FRT-1003">
+<button class="btn" id="doTrack">Gjurmo</button>
+</div>
+<div class="msg" id="trackMsg"></div>
+<div id="trackResult"></div>
+</div>
+</div>
+
+<!-- LIST -->
+<div class="sec" id="s-list">
+<h3 class="sub">Të gjitha dërgesat</h3>
+<div class="tablewrap"><table><thead><tr><th>ID</th><th>Ruta</th><th>Data e kërkuar</th><th>Pajisja gjurmuese</th><th>Transportuesi</th><th>Statusi</th></tr></thead><tbody id="allRows"></tbody></table></div>
+</div>
+
+<!-- ADD -->
+<div class="sec" id="s-add">
+<div class="panel">
+<h2>➕ Planifiko ngarkesë të re</h2>
+<div class="formgrid">
+<div><label>Nisja (qyteti)</label><input id="aFrom" placeholder="p.sh. Tiranë"></div>
+<div><label>Destinacioni</label><input id="aTo" placeholder="p.sh. Durrës"></div>
+<div><label>Data dhe ora e kërkuar</label><input id="aDate" type="datetime-local"></div>
+<div><label>Pesha (ton)</label><input id="aWeight" type="number" min="0" step="0.5" placeholder="p.sh. 12"></div>
+<div><label>Transportuesi</label><select id="aTrans"></select></div>
+<div><label>Automjeti</label><select id="aVeh"></select></div>
+</div>
+<br><button class="btn" id="doAdd">Ruaj ngarkesën</button>
+<div class="msg" id="addMsg"></div>
+</div>
+</div>
+
+<!-- TRANSPORTERS -->
+<div class="sec" id="s-trans">
+<h3 class="sub">Transportuesit e regjistruar</h3>
+<div class="tablewrap"><table><thead><tr><th>Emri</th><th>Kontakti</th><th>Qyteti</th><th>Dërgesa aktive</th><th>Vlerësimi</th></tr></thead><tbody id="transRows"></tbody></table></div>
+</div>
+
+<!-- VEHICLES -->
+<div class="sec" id="s-veh">
+<h3 class="sub">Automjetet</h3>
+<div class="tablewrap"><table><thead><tr><th>Targa</th><th>Lloji</th><th>Kapaciteti (t)</th><th>Shoferi</th><th>Statusi</th></tr></thead><tbody id="vehRows"></tbody></table></div>
+</div>
+</main>
+<footer>Krijuar nga <strong>Erion Nezha</strong> — © 2026</footer>
+<script>
+"use strict";
+var SEED_FREIGHT=[
+ {id:"FRT-1001",route:"Tiranë → Durrës",dt:"2026-09-24 08:30",dev:"TRK-A101",tr:"TransAlb shpk",w:12,st:"transit"},
+ {id:"FRT-1002",route:"Tiranë → Prishtinë",dt:"2026-09-24 10:00",dev:"TRK-A102",tr:"Balkan Cargo",w:8,st:"pending"},
+ {id:"FRT-1003",route:"Durrës → Shkup",dt:"2026-09-23 14:15",dev:"TRK-B205",tr:"TransAlb shpk",w:20,st:"transit"},
+ {id:"FRT-1004",route:"Tiranë → Sarajevë",dt:"2026-09-22 09:00",dev:"TRK-C310",tr:"Adria Transport",w:15,st:"done"},
+ {id:"FRT-1005",route:"Elbasan → Tiranë",dt:"2026-09-23 07:45",dev:"TRK-A103",tr:"Balkan Cargo",w:5,st:"late"},
+ {id:"FRT-1006",route:"Vlorë → Tiranë",dt:"2026-09-24 12:00",dev:"TRK-D410",tr:"Adria Transport",w:10,st:"pending"}
+];
+var TRANSPORTERS=[
+ {n:"TransAlb shpk",c:"+355 68 123 4567",city:"Tiranë",r:4.8},
+ {n:"Balkan Cargo",c:"+355 69 234 5678",city:"Durrës",r:4.5},
+ {n:"Adria Transport",c:"+355 67 345 6789",city:"Shkodër",r:4.9}
+];
+var VEHICLES=[
+ {t:"AA 123 AB",k:"Kamion",cap:20,d:"Gëzim M.",st:"Në rrugë"},
+ {t:"AA 456 CD",k:"Furgon",cap:3.5,d:"Arben K.",st:"I lirë"},
+ {t:"AA 789 EF",k:"Kamion",cap:15,d:"Dritan S.",st:"Në rrugë"},
+ {t:"AA 321 GH",k:"Furgon",cap:3.5,d:"Erion P.",st:"Në servis"}
+];
+var ST={transit:["b-transit","Në tranzit"],pending:["b-pending","Në pritje"],done:["b-done","Dorëzuar"],late:["b-late","Me vonesë"]};
+var KEY="freight_demo_v1",freight=[];
+function load(){try{var s=localStorage.getItem(KEY);if(s){freight=JSON.parse(s);return;}}catch(e){}
+  freight=SEED_FREIGHT.map(function(r){var o={};for(var k in r)o[k]=r[k];return o;});}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(freight));}catch(e){}}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function badge(st){var b=ST[st]||ST.pending;return '<span class="badge '+b[0]+'">'+b[1]+'</span>';}
+function rowHtml(f){
+  return "<tr><td><b>"+esc(f.id)+"</b></td><td>"+esc(f.route)+"</td><td>"+esc(f.dt)+"</td><td>"+esc(f.dev)+"</td><td>"+esc(f.tr)+"</td><td>"+badge(f.st)+"</td></tr>";
+}
+function render(){
+  var act=freight.filter(function(f){return f.st!=="done";}).length;
+  var tr=freight.filter(function(f){return f.st==="transit";}).length;
+  var dn=freight.filter(function(f){return f.st==="done";}).length;
+  var lt=freight.filter(function(f){return f.st==="late";}).length;
+  document.getElementById("cActive").textContent=act;
+  document.getElementById("cTransit").textContent=tr;
+  document.getElementById("cDone").textContent=dn;
+  document.getElementById("cLate").textContent=lt;
+  document.getElementById("cTrans").textContent=TRANSPORTERS.length;
+  document.getElementById("cVeh").textContent=VEHICLES.length;
+  var last=freight.slice(-4).reverse(),h="";
+  last.forEach(function(f){h+="<tr><td><b>"+esc(f.id)+"</b></td><td>"+esc(f.route)+"</td><td>"+esc(f.dt)+"</td><td>"+esc(f.dev)+"</td><td>"+badge(f.st)+"</td></tr>";});
+  document.getElementById("recentRows").innerHTML=h;
+  h="";freight.forEach(function(f){h+=rowHtml(f);});
+  document.getElementById("allRows").innerHTML=h;
+  h="";TRANSPORTERS.forEach(function(t){
+    var n=freight.filter(function(f){return f.tr===t.n&&f.st!=="done";}).length;
+    h+="<tr><td><b>"+esc(t.n)+"</b></td><td>"+esc(t.c)+"</td><td>"+esc(t.city)+"</td><td>"+n+"</td><td>⭐ "+t.r+"</td></tr>";});
+  document.getElementById("transRows").innerHTML=h;
+  h="";VEHICLES.forEach(function(v){
+    h+="<tr><td><b>"+esc(v.t)+"</b></td><td>"+esc(v.k)+"</td><td>"+v.cap+"</td><td>"+esc(v.d)+"</td><td>"+esc(v.st)+"</td></tr>";});
+  document.getElementById("vehRows").innerHTML=h;
+  var ts="",vs="";
+  TRANSPORTERS.forEach(function(t){ts+='<option>'+esc(t.n)+'</option>';});
+  VEHICLES.forEach(function(v){vs+='<option>'+esc(v.t)+' — '+esc(v.k)+'</option>';});
+  document.getElementById("aTrans").innerHTML=ts;
+  document.getElementById("aVeh").innerHTML=vs;
+}
+/* tabs */
+var navBtns=document.querySelectorAll("nav button");
+navBtns.forEach(function(b){
+  b.onclick=function(){
+    navBtns.forEach(function(x){x.classList.remove("active");});
+    b.classList.add("active");
+    document.querySelectorAll(".sec").forEach(function(s){s.classList.remove("active");});
+    document.getElementById("s-"+b.dataset.s).classList.add("active");
+  };
+});
+/* tracking */
+function findF(q){q=q.trim().toLowerCase();return freight.filter(function(f){return f.id.toLowerCase()===q;})[0];}
+function timeline(f){
+  var steps=[
+    {t:"Ngarkesa u planifikua",d:"Rezervimi u krijua në sistem — "+f.dt},
+    {t:"U caktua transportuesi",d:f.tr+" • Automjeti u konfirmua"},
+    {t:"Nisja nga origjina",d:"Pajisja "+f.dev+" aktivizoi gjurmimin"},
+    {t:"Në tranzit",d:"Dërgesa është rrugës: "+f.route},
+    {t:"Dorëzimi",d:"Malli dorëzohet te marrësi"}
+  ];
+  var idx={pending:1,transit:3,late:3,done:4}[f.st]||1;
+  var h='<div class="timeline">';
+  steps.forEach(function(s,i){
+    var cls=i<idx?"done":(i===idx?"now":"");
+    h+='<div class="tstep '+cls+'"><div><div class="tt">'+esc(s.t)+'</div><div class="td">'+esc(s.d)+'</div></div></div>';
+  });
+  return h+'</div>';
+}
+document.getElementById("doTrack").onclick=function(){
+  var q=document.getElementById("trackId").value,f=findF(q),box=document.getElementById("trackResult"),m=document.getElementById("trackMsg");
+  if(!f){m.style.color="#ff8f8f";m.textContent="❌ Nuk u gjet dërgesë me ID-në \""+q+"\". Provo p.sh. FRT-1003.";box.innerHTML="";return;}
+  m.style.color="#7dff9e";m.textContent="✅ Dërgesa u gjet.";
+  box.innerHTML='<div class="panel" style="margin-top:12px"><h2>'+esc(f.id)+' — '+esc(f.route)+'</h2>'
+    +'<p style="color:#9fb3c8;font-size:.88rem;margin-bottom:8px">Statusi: '+badge(f.st)
+    +' &nbsp;•&nbsp; Pajisja: '+esc(f.dev)+' &nbsp;•&nbsp; Pesha: '+esc(f.w)+' t</p>'
+    +timeline(f)+'</div>';
+};
+/* add freight */
+document.getElementById("doAdd").onclick=function(){
+  var from=document.getElementById("aFrom").value.trim(),to=document.getElementById("aTo").value.trim();
+  var dt=document.getElementById("aDate").value,w=document.getElementById("aWeight").value;
+  var tr=document.getElementById("aTrans").value,vh=document.getElementById("aVeh").value;
+  var m=document.getElementById("addMsg");
+  if(!from||!to){m.style.color="#ff8f8f";m.textContent="Ju lutem shkruani nisjen dhe destinacionin.";return;}
+  var max=1000;
+  freight.forEach(function(f){var n=parseInt(f.id.split("-")[1],10);if(n>max)max=n;});
+  var id="FRT-"+(max+1);
+  var dts=dt?dt.replace("T"," ").slice(0,16):"—";
+  freight.push({id:id,route:from+" → "+to,dt:dts,dev:"TRK-NEW",tr:tr,w:w||"—",st:"pending"});
+  save();render();
+  m.style.color="#7dff9e";m.textContent="✅ Ngarkesa "+id+" u planifikua me sukses ("+vh+").";
+  document.getElementById("aFrom").value="";document.getElementById("aTo").value="";
+  document.getElementById("aWeight").value="";document.getElementById("aDate").value="";
+};
+load();render();
+</script>
+</body>
+</html>
