@@ -1,0 +1,171 @@
+// @import"../../../../../styles/variables";
+@import "variables";
+
+/* Structure */
+.example-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+}
+
+
+
+.print {
+  position: relative;
+  top: 10px;
+  cursor: pointer;
+  right: 5px;
+}
+.example-loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.example-rate-limit-reached {
+  max-width: 360px;
+  text-align: center;
+}
+
+/* Column Widths */
+.mat-column-number,
+.mat-column-state {
+  max-width: 64px;
+}
+
+.mat-column-created {
+  max-width: 124px;
+}
+
+//
+
+.mat-column-position {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+.mat-column-name {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+.mat-column-weight {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+.mat-column-symbol {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+
+.app-hint {
+  background-color: #ffff00;
+  color: #000000;
+  padding: 3px;
+  font-weight: 550;
+  font-size: 12px;
+}
+
+.mat-paginator {
+  background: unset;
+}
+
+
+.mat-toolbar-row, .mat-toolbar-single-row {
+  display: flex;
+  box-sizing: border-box;
+  padding: 0 0px; 
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.mat-toolbar-row, .mat-toolbar-single-row {
+  height: 37px;
+}
+
+
+
+// table right corder 
+
+
+.mat-column-freight_plan_id {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+.mat-column-route {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+.mat-column-freight_required_date_time {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+.mat-column-images_of_goods_to_be_transported {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+
+.mat-column-total_freight_delivery_quantity {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+
+
+.mat-column-freight_plan_added_by {
+  border-right: 1px solid $secondary-color;
+  text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.order_list{
+  color:$large-text-color;
+}
+
+
+
+
+
+
+
+
+
+
+
